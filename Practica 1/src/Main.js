@@ -23,11 +23,47 @@ window.addEventListener("load", function(evt) {
     context.moveTo(10,300);
     context.lineTo(800,300);
     context.stroke();
+
+    //Radio del círculo móvil 
+    let radioMóvil = 40;
+
+    //Factor k, elección de usuario
+    let k = 2.5;
+
+    context.strokeStyle = '#4a98d3';
+
+    //Dibujamos la epicicloide
+    for (let giro = 0; giro < 361; giro++) {
+        let x = xElement(giro, radioMóvil, k) + 400;
+        let y = yElement(giro, radioMóvil, k) + 300;
+        context.beginPath();
+        context.moveTo(x,y);
+        context.lineTo(x,y);
+        context.stroke();
+    }
 });
+
+/* 
+Función parametrica de x para la epicicloide 
+Recibe el ángulo teta, el radio del círculo móvil r y el factor k
+*/
+function xElement(teta, r, k) {
+    izq = r * (k+1) * Math.cos(teta);
+    der = r * Math.cos((k+1) * teta);
+    return izq - der;
+}
+
+/* 
+Función parametrica de y para la epicicloide 
+Recibe el ángulo teta, el radio del círculo móvil r y el factor k
+*/
+function yElement(teta, r, k) {
+    izq = r * (k+1) * Math.sin(teta);
+    der = r * Math.sin((k+1) * teta);
+    return izq - der;
+}
 
 // Por hacer:
 /*
-1. Definir funciones parametricas
-2. Definir ciclo for para formar puntos
-3. Hacer lineTo
+1. Hacer lineTo
 */
