@@ -1,4 +1,7 @@
 //Script principal
+/**
+ * Armando Ramírez González
+ */
 window.addEventListener("load", function(evt) {
     //Se obtiene el canvas
     let canvas = document.getElementById("el_canvas");
@@ -24,21 +27,29 @@ window.addEventListener("load", function(evt) {
     context.lineTo(800,300);
     context.stroke();
 
-    //Radio del círculo móvil 
-    let radioMóvil = 40;
-
+    
     //Factor k, elección de usuario
-    let k = 2.5;
+    let k = 2.1;
+    
+    //Radio del círculo móvil 
+    let radioMóvil = 70/k;
 
+    // Configuración de color y grosor de línea para la epicicloide
     context.strokeStyle = '#4a98d3';
+    context.lineWidth = 1;
 
     //Dibujamos la epicicloide
-    for (let giro = 0; giro < 361; giro++) {
-        let x = xElement(giro, radioMóvil, k) + 400;
-        let y = yElement(giro, radioMóvil, k) + 300;
+    let sumaGiro = 0.01;
+    for (let giro = 0; giro <= 76; giro=giro+sumaGiro) {
+        let x1 = xElement(giro, radioMóvil, k) + 400;
+        let y1 = yElement(giro, radioMóvil, k) + 300;
+
+        let x2 = xElement(giro+sumaGiro, radioMóvil, k) + 400;
+        let y2 = yElement(giro+sumaGiro, radioMóvil, k) + 300;
+
         context.beginPath();
-        context.moveTo(x,y);
-        context.lineTo(x,y);
+        context.moveTo(x1,y1);
+        context.lineTo(x2,y2);
         context.stroke();
     }
 });
@@ -62,8 +73,3 @@ function yElement(teta, r, k) {
     der = r * Math.sin((k+1) * teta);
     return izq - der;
 }
-
-// Por hacer:
-/*
-1. Hacer lineTo
-*/
