@@ -31,6 +31,32 @@ var CG = (function(CG) {
             let vect = new Vector3(nx,ny,nz);
             return vect;
         }
+
+        /**
+         * @return {Vector3}
+         * Devuelve la copia del vector que invocó la función
+         */
+        clone() {
+            let copyX = this.x;
+            let copyY = this.y;
+            let copyZ = this.z;
+            let copyVector = new Vector3(copyX,copyY,copyZ);
+            return copyVector;
+        }
+
+         /**
+         * @param {Vector3} u
+         * @param {Vector3} v
+         * @return {Vector3}
+         * Devuelve el producto cruz del vector u y v
+         */
+        static cross(u, v) {
+            let componenteX = (u.y*v.z) - (u.z*v.y);
+            let componenteY = (u.z*v.x) - (u.x*v.z);
+            let componenteZ = (u.x*v.y) - (u.y*v.x);
+            let vector = new Vector3(componenteX,componenteY,componenteZ);
+            return vector;
+        }
     }
 
     CG.Vector3 = Vector3;
