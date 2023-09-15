@@ -57,6 +57,52 @@ var CG = (function(CG) {
             let vector = new Vector3(componenteX,componenteY,componenteZ);
             return vector;
         }
+
+        /**
+         * @param {Vector3} u
+         * @param {Vector3} v
+         * @return {Number}
+         * Devuelve la distancia eucidiana entre dos vectores
+         */
+        static distance(u, v) {
+            let numX = Math.pow((u.x-v.x),2);
+            let numY = Math.pow((u.y-v.y),2);
+            let numZ = Math.pow((u.z-v.z),2);
+            let res = Math.sqrt(numX + numY + numZ);
+            return res;
+        }
+
+        /**
+         * @param {Vector3} u
+         * @param {Vector3} v
+         * @return {Number}
+         * Devuelve el producto punto de los vectores u y v
+         */
+        static dot(u,v) {
+            let nx = u.x*v.x;
+            let ny = u.y*v.y;
+            let nz = u.z*v.z;
+            return nx+ny+nz;
+        }
+
+        /**
+         * @param {Vector3} u
+         * @param {Vector3} v
+         * @return {Boolean}
+         * Devuelve verdadero si sus valores son aproximadamente iguales con e = 0.000001, falso
+         * en caso contrario
+         */
+        static equals(u,v) {
+            let restaX = Math.abs(u.x-v.x);
+            let restaY = Math.abs(u.y-v.y);
+            let restaZ = Math.abs(u.z-v.z);
+            if ((restaX >= 0 && restaX < 0.000002) && 
+                (restaY >= 0 && restaY < 0.000002) && 
+                (restaZ >= 0 && restaZ < 0.000002)) {
+                return true;
+            }
+            return false;
+        }
     }
 
     CG.Vector3 = Vector3;
