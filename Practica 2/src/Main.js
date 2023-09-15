@@ -6,10 +6,6 @@ window.addEventListener("load", function() {
     context.fillRect(0, 0, canvas.width, canvas.height);
   
     let tmp_v;
-
-    let u = new CG.Vector3(5.000001,6.000001,3);
-    let v = new CG.Vector3(5.000002,6.000002,3.000002);
-    console.log(CG.Vector3.equals(u,v));
   
     let obj = {
       vertices : [

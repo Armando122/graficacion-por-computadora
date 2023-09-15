@@ -103,6 +103,64 @@ var CG = (function(CG) {
             }
             return false;
         }
+
+        /**
+         * @param {Vector3} u
+         * @param {Vector3} v
+         * @return {Boolean}
+         * Devuelve verdadero  si sur argumentos son exactamente iguales, falso en
+         * caso contrario.
+         */
+        static exactEquals(u, v) {
+            if (u.x == v.x && u.y == v.y && u.z == v.z) {
+                return true;   
+            }
+            return false;
+        }
+
+        /**
+         * @return {Vector3}
+         * Devuelve el vector normalizado
+         */
+        normalize() {
+            let sumaV = Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2);
+            let moduloV = Math.sqrt(sumaV);
+            let nx = this.x / moduloV;
+            let ny = this.y / moduloV;
+            let nz = this.z / moduloV;
+            return new Vector3(nx, ny, nz);
+        }
+
+        /**
+         * @param {Number} x
+         * @param {Number} y
+         * @param {Number} z
+         * Asigna los nuevos componentes al vector
+         */
+        set(nx, ny, nz) {
+            this.x = nx;
+            this.y = ny;
+            this.z = nz;
+        }
+
+        /**
+         * @param {Vector3} u
+         * @param {Vector3} v
+         * @return {Number}
+         * Devuelve la distancia euclidiana al cuadrado
+         */
+        static squareDistance(u, v) {
+            return Math.pow(this.distance(u, v), 2);
+        }
+
+        /**
+         * Asigna cero a cada componente del vector
+         */
+        zero() {
+            this.x = 0;
+            this.y = 0;
+            this.z = 0;
+        }
     }
 
     CG.Vector3 = Vector3;
