@@ -122,7 +122,9 @@ function multiplyVectorTest() {
 function rotateTest() {
     let text = "Prueba rotación: ";
     let theta = (Math.PI/180)*45;
-    let test = new CG.Matrix3(Math.cos(theta),-Math.sin(theta),0, Math.sin(theta),Math.cos(theta),0, 0,0,1);
+    let test = new CG.Matrix3(Math.cos(theta),-Math.sin(theta),0, 
+                              Math.sin(theta), Math.cos(theta),0, 
+                              0,0,1);
     let m = CG.Matrix3.rotate(theta);
     if (CG.Matrix3.equals(test,m)) {
         console.log(text + "Pasa");
@@ -174,8 +176,8 @@ function substractTest() {
 function translateTest() {
     let text = "Prueba translación: ";
     let m = CG.Matrix3.translate(5,-10);
-    let test = CG.Matrix3(1,0,5, 0,1,-10, 0,0,1);
-    if (CG.Matrix3.equasl(m, test)) {
+    let test = new CG.Matrix3(1,0,5, 0,1,-10, 0,0,1);
+    if (CG.Matrix3.equals(m, test)) {
         console.log(text + "Pasa");
     } else {
         console.log(text + "Falla");

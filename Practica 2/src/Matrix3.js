@@ -272,7 +272,79 @@ var CG = (function(CG) {
          * Devuelve una matriz que representa la matriz de rotación en theta radianes.
          */
         static rotate(theta) {
-            return "";
+            let mR = new Matrix3(
+                Math.cos(theta), -Math.sin(theta), 0,
+                Math.sin(theta), Math.cos(theta), 0,
+                0, 0, 1
+            );
+            return mR; 
+        }
+
+        /**
+         * @param {Number} sx
+         * @param {Number} sy
+         * @return {Matrix3}
+         * Devuelve la matriz de escalamiento con sx en x y sy en y
+         */
+        static scale(sx, sy) {
+            let mS = new Matrix3(
+                sx, 0, 0,
+                0, sy, 0, 
+                0, 0, 1
+            );
+            return mS;
+        }
+
+        /**
+         * @param {Number} a00
+         * @param {Number} a01
+         * @param {Number} a02
+         * @param {Number} a10
+         * @param {Number} a11
+         * @param {Number} a12
+         * @param {Number} a20
+         * @param {Number} a21
+         * @param {Number} a22
+         * Asigna los nuevos valores a la matriz que llama la función
+         */
+        set(a00, a01, a02, a10, a11, a12, a20, a21, a22) {
+            this.a00 = a00;
+            this.a01 = a01;
+            this.a02 = a02;
+            this.a10 = a10;
+            this.a11 = a11;
+            this.a12 = a12;
+            this.a20 = a20;
+            this.a21 = a21;
+            this.a22 = a22;
+        }
+
+        /**
+         * @param {Matrix3} m1
+         * @param {Matrix3} m2
+         * @return {Matrix3}
+         * Sustrae componente a componente la matriz m2 de m1
+         */
+        static substract(m1,m2) {
+            let mEscalar = Matrix3.multiplyScalar(m2, -1);
+            let res = Matrix3.add(m1, mEscalar);
+            return res;
+        }
+
+        /**
+         * @param {Number} tx
+         * @param {Number} ty
+         * @return {Matrix3}
+         * Devuelve la matriz de transformación de traslación, tx traslación en x
+         * y ty traslación en y
+         */
+        static translate(tx, ty) {
+            let mTrans = new Matrix3(
+                1, 0, tx,
+                0, 1, ty,
+                0, 0, 1
+            );
+            return mTrans;
         }
 
         /**
