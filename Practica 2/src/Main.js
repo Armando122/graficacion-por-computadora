@@ -6,11 +6,6 @@ window.addEventListener("load", function() {
     context.fillRect(0, 0, canvas.width, canvas.height);
   
     let tmp_v;
-
-    /*let m1 = new CG.Matrix3(1,1,2, 2,4,5, 2,7,3);
-    let m2 = new CG.Matrix3(1,1,1, 1,1,1, 1,1,1);
-    let dum = new CG.Matrix3(1,1,2, 2,4,5, 2,7,3);
-    console.log(CG.Matrix3.exactEquals(m1,m2));*/
   
     let obj = {
       vertices : [
