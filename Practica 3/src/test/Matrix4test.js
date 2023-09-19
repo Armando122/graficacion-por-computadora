@@ -1,0 +1,4 @@
+// Tests
+testConstructor();
+testAdd();
+testAdjoint();
