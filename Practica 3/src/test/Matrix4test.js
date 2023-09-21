@@ -16,9 +16,9 @@ testMultiplyVector();
 testOrthographic();
 testPerspective();
 testRotateX();
-//Pendientes
 testRotateY();
 testRotateZ();
+//Pendientes
 testScale();
 testSet();
 testSubstract();
@@ -296,6 +296,38 @@ function testRotateX() {
     let rot = CG.Matrix4.rotateX(theta);
     let test = new CG.Matrix4(1,0,0,0, 0,Math.cos(theta),-Math.sin(theta),0,
                               0,Math.sin(theta),Math.cos(theta),0, 0,0,0,1);
+    if (CG.Matrix4.equals(rot, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test rotateY
+function testRotateY() {
+    let text = "Prueba rotación en y: ";
+    let theta = (82*Math.PI) / 180;
+    let rot = CG.Matrix4.rotateY(theta);
+    let test = new CG.Matrix4(Math.cos(theta),0,Math.sin(theta),0,
+                              0,1,0,0,
+                              -Math.sin(theta),0,Math.cos(theta),0, 
+                              0,0,0,1);
+    if (CG.Matrix4.equals(rot, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test rotateZ
+function testRotateZ() {
+    let text = "Prueba rotación en z: ";
+    let theta = (82*Math.PI) / 180;
+    let rot = CG.Matrix4.rotateZ(theta);
+    let test = new CG.Matrix4(Math.cos(theta),-Math.sin(theta),0,0,
+                              Math.sin(theta),Math.cos(theta),0,0, 
+                              0,0,1,0,
+                              0,0,0,1);
     if (CG.Matrix4.equals(rot, test)) {
         console.log(text + "Pasa");
     } else {
