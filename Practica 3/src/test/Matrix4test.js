@@ -9,7 +9,6 @@ testExactEquals();
 testFrustum();
 testIdentiy();
 testInvert();
-//Pendientes
 testLookAt();
 testMultiply();
 testMultiplyScalar();
@@ -17,6 +16,14 @@ testMultiplyVector();
 testOrthographic();
 testPerspective();
 testRotateX();
+//Pendientes
+testRotateY();
+testRotateZ();
+testScale();
+testSet();
+testSubstract();
+testTranslate();
+testTranspose();
 
 // Test constructor
 function testConstructorM4() {
@@ -183,6 +190,113 @@ function testInvert() {
     let inv = m.invert();
     let test = new CG.Matrix4(19/120,-1/15,-1/20,-17/40, -1/8,0,1/4,-7/8, -1/6,1/3,0,-1/2, 0,0,0,1);
     if (CG.Matrix4.equals(inv,test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test lookAt
+function testLookAt() {
+    let text = "Prueba lookAt: ";
+    let eye = new CG.Vector3(3,2,4);
+    let center = new CG.Vector3(0,0,0);
+    let up = new CG.Vector3(0,1,0);
+    let mLookAt = CG.Matrix4.lookAt(eye, center, up);
+    let test = new CG.Matrix4((
+                   4*Math.sqrt(17))/17, 0, -(3*Math.sqrt(17))/17, 0
+                   -6/Math.sqrt(493), 25/Math.sqrt(493), -8/Math.sqrt(493), 0,
+                   3/Math.sqrt(29), 2/Math.sqrt(29), 4/Math.sqrt(29), -Math.sqrt(29),
+                   0, 0, 0, 1);
+    if (CG.Matrix4.equals(mLookAt, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test multiply
+function testMultiply() {
+    let text = "Prueba multiplicación: ";
+    let m1 = new CG.Matrix4(1,2,2,2, 3,1,3,3, 4,4,1,4, 5,5,5,1);
+    let m2 = new CG.Matrix4(1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16);
+    let res = CG.Matrix4.multiply(m1, m2);
+    let test = new CG.Matrix4(55,62,69,76, 74,84,94,104, 85,98,111,124, 88,104,120,136);
+    if (CG.Matrix4.equals(res, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test multiplyScalar
+function testMultiplyScalar() {
+    let text = "Prueba multiplicación por escalar: ";
+    let m = new CG.Matrix4(1,2,2,2, 3,1,3,3, 4,4,1,4, 5,5,5,1);
+    let k = 2;
+    let res = CG.Matrix4.multiplyScalar(m, k);
+    let test = new CG.Matrix4(2,4,4,4, 6,2,6,6, 8,8,2,8, 10,10,10,2);
+    if (CG.Matrix4.equals(res, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test multiplyVector
+function testMultiplyVector() {
+    let text = "Prueba multiplicación por un vector: ";
+    let m = new CG.Matrix4(1,2,2,2, 3,1,3,3, 4,4,1,4, 5,5,5,1);
+    let v = new CG.Vector4(5,4,3,1);
+    let res = m.multiplyVector(v);
+    let test = new CG.Matrix4(22,29,43,61);
+    if (CG.Vector4.equals(res, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test orthographic
+function testOrthographic() {
+    let text = "Prueba ortografica: ";
+    let mOrth = CG.Matrix4.orthographic(-3,3, -3/(800/600),3/(800/600), 3,100);
+    let test = new CG.Matrix4(
+                   1, 0, 0, 0,
+                   0, 4/9, 0, 0,
+                   0, 0, 2/97, 103/97,
+                   0, 0, 0, 1);
+    if (CG.Matrix4.equals(mOrth, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test perspective
+function testPerspective() {
+    let text = "Prueba perspectiva: ";
+    let mPersp = CG.Matrix4.perspective((75 * Math.PI) / 180, 800/600, 0.1, 2000);
+    let test = new CG.Matrix4(
+                   0.9774, 0, 0, 0,
+                   0, 1.30, 0, 0,
+                   0, 0, -20001/19999, -4000/19999,
+                   0, 0, 0, 1);
+    if (CG.Matrix4.equals(mPersp, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test rotateX
+function testRotateX() {
+    let text = "Prueba rotación en x: ";
+    let theta = (82*Math.PI) / 180;
+    let rot = CG.Matrix4.rotateX(theta);
+    let test = new CG.Matrix4(1,0,0,0, 0,Math.cos(theta),-Math.sin(theta),0,
+                              0,Math.sin(theta),Math.cos(theta),0, 0,0,0,1);
+    if (CG.Matrix4.equals(rot, test)) {
         console.log(text + "Pasa");
     } else {
         console.log(text + "Falla");
