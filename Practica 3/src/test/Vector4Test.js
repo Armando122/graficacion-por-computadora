@@ -96,7 +96,7 @@ function testEquals() {
     } else {
         test = test && false;
     }
-    if (!CG.Vector4.equals(u,s)) {
+    if (CG.Vector4.equals(u,s)) {
         test = test && true;
     } else {
         test = test && false;

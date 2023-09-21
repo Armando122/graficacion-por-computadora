@@ -2,7 +2,6 @@
 testConstructorM4();
 testAdd();
 testAdjoint();
-//Pendientes
 testClone();
 testDeterminant();
 testEquals();
@@ -10,6 +9,14 @@ testExactEquals();
 testFrustum();
 testIdentiy();
 testInvert();
+//Pendientes
+testLookAt();
+testMultiply();
+testMultiplyScalar();
+testMultiplyVector();
+testOrthographic();
+testPerspective();
+testRotateX();
 
 // Test constructor
 function testConstructorM4() {
@@ -62,6 +69,120 @@ function testAdjoint() {
     let adj = m.adjoint();
     let test = new CG.Matrix4(210,-136,165,-50, -39,5,20,-92, -190,-12,-48,79, 61,-26-104,53);
     if (CG.Matrix4.equals(adj, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test clone
+function testClone() {
+    let text = "Prueba clonar: ";
+    let m = new CG.Matrix4(1,1,1,1, 2,2,2,2, 3,3,3,3, 4,4,4,4);
+    let clon = m.clone();
+    if (CG.Matrix4.exactEquals(m, clon)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test determinant
+function testDeterminant() {
+    let text = "Prueba determinante: ";
+    let m = new CG.Matrix4(1,2,3,4, 2,1,2,3, 3,2,1,2, 4,3,2,1);
+    let det = m.determinant();
+    if (det == -20) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test equals
+function testEquals() {
+    let text = "Prueba equals: ";
+    let m1 = new CG.Matrix4(1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1);
+    let m2 = new CG.Matrix4();
+    let m3 = new CG.Matrix4(1.56,1.56,1.23,1.45, 1.2,1.12,1.23,1.12, 1.12,1.23,1.23,1.34, 1.58,1.58,1.58,1);
+    let test = true;
+    if (!CG.Matrix4.equals(m1,m2)) {
+        test = test && true;
+    } else {
+        test = test && false;
+    }
+    if (CG.Matrix4.equals(m1,m3)) {
+        test = test && true;
+    } else {
+        test = test && false;
+    }
+    if (test) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test exactEquals
+function testExactEquals() {
+    let text = "Prueba exactEquals: ";
+    let m1 = new CG.Matrix4(1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1);
+    let m2 = new CG.Matrix4();
+    let m3 = new CG.Matrix4(1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1);
+    let test = true;
+    if (!CG.Matrix4.exactEquals(m1,m2)) {
+        test = test && true;
+    } else {
+        test = test && false;
+    }
+    if (CG.Matrix4.exactEquals(m1,m3)) {
+        test = test && true;
+    } else {
+        test = test && false;
+    }
+    if (test) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test frustum
+function testFrustum() {
+    let text = "Prueba frustrum: ";
+    let aspect = 800/600;
+    let frustrum = CG.Matrix4.frustum(-3,3, -3/aspect, 3/aspect, 3, 100);
+    let test = new CG.Matrix4(-1,0,0,0, 0,4/3,0,0, 0,0,-103/97,-600/97, 0,0,-1,0);
+    if (CG.Matrix4.equals(frustrum, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test identity
+function testIdentiy() {
+    let text = "Prueba identidad: ";
+    let m = new CG.Matrix4(1,2,3,4, 2,1,2,3, 3,2,1,2, 4,3,2,1);
+    m.identity();
+    if (m.a00 == 1 && m.a01 == 0 && m.a02 == 0 && m.a03 == 0 && 
+        m.a10 == 0 && m.a11 == 1 && m.a12 == 0 && m.a13 == 0 && 
+        m.a20 == 0 && m.a21 == 0 && m.a22 == 1 && m.a23 == 0 &&
+        m.a30 == 0 && m.a31 == 0 && m.a32 == 0 && m.a33 == 1) {
+            console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+
+}
+
+// Test invert
+function testInvert() {
+    let text = "Prueba inversa: ";
+    let m = new CG.Matrix4(10,2,2,7, 5,1,4,5, 5,5,1,7, 0,0,0,1);
+    let inv = m.invert();
+    let test = new CG.Matrix4(19/120,-1/15,-1/20,-17/40, -1/8,0,1/4,-7/8, -1/6,1/3,0,-1/2, 0,0,0,1);
+    if (CG.Matrix4.equals(inv,test)) {
         console.log(text + "Pasa");
     } else {
         console.log(text + "Falla");
