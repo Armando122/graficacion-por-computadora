@@ -18,7 +18,6 @@ testPerspective();
 testRotateX();
 testRotateY();
 testRotateZ();
-//Pendientes
 testScale();
 testSet();
 testSubstract();
@@ -329,6 +328,78 @@ function testRotateZ() {
                               0,0,1,0,
                               0,0,0,1);
     if (CG.Matrix4.equals(rot, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test Scale
+function testScale() {
+    let text = "Prueba escala: ";
+    let v = new CG.Vector3(4,5,-9);
+    let escala = CG.Matrix4.scale(v);
+    let test = new CG.Matrix4(4,0,0,0, 0,5,0,0, 0,0,-9,0, 0,0,0,1);
+    if (CG.Matrix4.equals(escala, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test set
+function testSet() {
+    let text = "Prueba set: ";
+    let m = new CG.Matrix4(
+        0.9774, 0, 0, 0,
+        0, 1.30, 0, 0,
+        0, 0, -20001/19999, -4000/19999,
+        0, 0, 0, 1);
+    m.set(1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1);
+    let test = new CG.Matrix4(1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1);
+    if (CG.Matrix4.equals(m, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test substract
+function testSubstract() {
+    let text = "Prueba resta: ";
+    let m1 = new CG.Matrix4(4,0,0,0, 0,5,0,0, 0,0,-9,0, 0,0,0,1);
+    let m2 = new CG.Matrix4(1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1);
+    let res1 = CG.Matrix4.substract(m1,m2);
+    let res2 = CG.Matrix4.substract(m2,m1);
+    let test1 = new CG.Matrix4(3,-1,-1,-1, -1,4,-1,-1, -1,-1,-10,-1, -1,-1,-1,0);
+    let test2 = new CG.Matrix4(-3,1,1,1, 1,-4,1,1, 1,1,-8,1, 1,1,1,0);
+    if (CG.Matrix4.equals(res1, test1) && CG.Matrix4.equals(res2, test2)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test translate
+function testTranslate() {
+    let text = "Prueba traslación: ";
+    let v = new CG.Vector3(15,-3,48);
+    let tras = CG.Matrix4.translate(v);
+    let test = new CG.Matrix4(1,0,0,15, 0,1,0,-3, 0,0,1,48, 0,0,0,1);
+    if (CG.Matrix4.equals(tras, test)) {
+        console.log(text + "Pasa");
+    } else {
+        console.log(text + "Falla");
+    }
+}
+
+// Test transpose
+function testTranspose() {
+    let text = "Prueba transpuesta: ";
+    let m = new CG.Matrix4(2,4,4,4, 6,2,6,6, 8,8,2,8, 10,10,10,2);
+    let transpuesta = m.transpose();
+    let test = new CG.Matrix4(2,6,8,10, 4,2,8,10, 4,6,2,10, 4,6,8,2);
+    if (CG.Matrix4.equals(transpuesta, test)) {
         console.log(text + "Pasa");
     } else {
         console.log(text + "Falla");
