@@ -15,7 +15,7 @@ testZero();
 function testConstructor() {
     let text = "Prueba constructor: ";
     let v = new CG.Vector4(1,1,1,1);
-    let vVacio = CG.Vector4();
+    let vVacio = new CG.Vector4();
     let test = true;
     if (v.x == 1 && v.y == 1 && v.z == 1 && v.w == 1 &&
         vVacio.x == 0 && vVacio.y == 0 && vVacio.z == 0 && vVacio.w == 0) {
@@ -89,7 +89,7 @@ function testEquals() {
     let text = "Prueba equals: ";
     let u = new CG.Vector4(1,1,1,1);
     let v = new CG.Vector4(2,3,4,5);
-    let s = new CG.Vector4(1.58,1.58,1.2,1.789);
+    let s = new CG.Vector4(1.000001,1.000001,1.000001,1.000001);
     let test = true;
     if (!CG.Vector4.equals(u,v)) {
         test = test && true;
@@ -110,17 +110,17 @@ function testEquals() {
 
 // Test exactEquals
 function testExactEquals() {
-    let text = "Prueba equals: ";
+    let text = "Prueba exact equals: ";
     let u = new CG.Vector4(1,1,1,1);
     let v = new CG.Vector4(2,3,4,5);
     let s = new CG.Vector4(1,1,1,1);
     let test = true;
-    if (!CG.Vector4.equals(u,v)) {
+    if (!CG.Vector4.exactEquals(u,v)) {
         test = test && true;
     } else {
         test = test && false;
     }
-    if (!CG.Vector4.equals(u,s)) {
+    if (CG.Vector4.exactEquals(u,s)) {
         test = test && true;
     } else {
         test = test && false;
