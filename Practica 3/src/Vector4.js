@@ -104,6 +104,55 @@ var CG = (function(CG) {
             }
             return false;
         }
+
+        /**
+         * @return {Vector4}
+         * Devuelve el vector normalizado
+         */
+        normalize() {
+            let sumaV = Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2) + Math.pow(this.w, 2);
+            let moduloV = Math.sqrt(sumaV);
+            let nx = this.x / moduloV;
+            let ny = this.y / moduloV;
+            let nz = this.z / moduloV;
+            let nw = this.w / moduloV;
+            return new Vector4(nx, ny, nz, nw);
+        }
+
+        /**
+         * @param {Number} x
+         * @param {Number} y
+         * @param {Number} z
+         * @param {Number} w
+         * Asigna los nuevos valores al vector
+         */
+        set(x, y, z, w) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.w = w;
+        }
+
+        /**
+         * @param {Vector4} u
+         * @param {Vector4} v
+         * @return {Number}
+         * Devuelve la distancia al cuadrado que hay entre los argumentos
+         */
+        static squaredDistance(u, v) {
+            let n = Vector4.distance(u,v);
+            return Math.pow(n, 2);
+        }
+
+        /**
+         * Asigna cero a cada componente del vector
+         */
+        zero() {
+            this.x = 0;
+            this.y = 0;
+            this.z = 0;
+            this.w = 0;
+        }
     }
 
     CG.Vector4 = Vector4;

@@ -165,7 +165,7 @@ function testSquareDistance() {
     let a = new CG.Vector4(0,2,0,1);
     let b = new CG.Vector4(7,2,-1,1);
     let test = Math.pow(Math.sqrt(50),2);
-    let res = CG.Vector4.squareDistance(a,b);
+    let res = CG.Vector4.squaredDistance(a,b);
     if (res == test) {
         console.log(text + "Pasa");
     } else {
@@ -179,7 +179,7 @@ function testZero() {
     let a = new CG.Vector4(50,2,40,1);
     a.zero();
     let v = new CG.Vector4(0,0,0,0);
-    if (CG.Vector4.exactEquals(u, v)) {
+    if (CG.Vector4.exactEquals(a, v)) {
         console.log(text + "Pasa");
     } else {
         console.log(text + "Falla");
