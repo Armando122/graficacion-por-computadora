@@ -73,7 +73,7 @@ function testAdjoint() {
     let text = "Prueba adjunta: ";
     let m = new CG.Matrix4(0,2,3,-1, 4,5,5,5, -1,4,0,6, 0,8,-1,2);
     let adj = m.adjoint();
-    let test = new CG.Matrix4(210,-136,165,-50, -39,5,20,-92, -190,-12,-48,79, 61,-26-104,53);
+    let test = new CG.Matrix4(210,-136,165,-50, -39,5,20,-92, -190,-12,-48,79, 61,-26,-104,53);
     if (CG.Matrix4.equals(adj, test)) {
         console.log(text + "Pasa");
     } else {
@@ -110,7 +110,7 @@ function testEquals() {
     let text = "Prueba equals: ";
     let m1 = new CG.Matrix4(1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1);
     let m2 = new CG.Matrix4();
-    let m3 = new CG.Matrix4(1.56,1.56,1.23,1.45, 1.2,1.12,1.23,1.12, 1.12,1.23,1.23,1.34, 1.58,1.58,1.58,1);
+    let m3 = new CG.Matrix4(1.000001,1.000001,1.000001,1.000001, 1.000001,1.000001,1.000001,1.000001, 1.000001,1.000001,1.000001,1.000001, 1.000001,1.000001,1.000001,1);
     let test = true;
     if (!CG.Matrix4.equals(m1,m2)) {
         test = test && true;
