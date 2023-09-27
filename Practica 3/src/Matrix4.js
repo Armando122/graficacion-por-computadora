@@ -238,6 +238,114 @@ var CG = (function(CG) {
             }
             return false;
         }
+
+        /**
+         * @param {Number} left
+         * @param {Number} right
+         * @param {Number} bottom
+         * @param {Number} top
+         * @param {Number} near
+         * @param {Number} far
+         * @return {Matrix4}
+         * Construye una matriz que representa el frustum
+         * determinada por los planos left, right, bottom, top, near y far
+         */
+        static frustum(left, right, bottom, top, near, far) {
+            return new Matrix4(
+                (2*near)/(right-left), 0, (right+left)/(right-left), 0,
+                0, (2*near)/(top-bottom), (top+bottom)/(top-bottom), 0,
+                0, 0, -(far+near)/(far-near), -(2*near*far)/(far-near),
+                0, 0, -1, 0
+            );
+        }
+
+        /**
+         * Asigna los valores de la matriz identidad a la matriz que invocó la función
+         */
+        identity() {
+            this.a00 = 1;
+            this.a01 = 0;
+            this.a02 = 0;
+            this.a03 = 0;
+            this.a10 = 0;
+            this.a11 = 1;
+            this.a12 = 0;
+            this.a13 = 0;
+            this.a20 = 0;
+            this.a21 = 0;
+            this.a22 = 1;
+            this.a23 = 0;
+            this.a30 = 0;
+            this.a31 = 0;
+            this.a32 = 0;
+            this.a33 = 1;
+        }
+
+        /**
+         * @return {Matrix4}
+         * Devuelve la matriz inversa de la matriz que invoca la función
+         */
+        invert() {
+            let adjunta = this.adjoint();
+            let transpuesta = adjunta.transpose();
+            let det = this.determinant();
+            let res = Matrix4.multiplyScalar(adjunta, 1/det);
+            return res;
+        }
+
+        /**
+         * @param {Matrix4} m1
+         * @param {Number} c
+         * @return {Matrix4}
+         * Devuelve la matriz resultante de multiplicar la matriz original por un escalar.
+         */
+        static multiplyScalar(m1, c) {
+            let multEscalar = new Matrix4(
+                m1.a00 * c,
+                m1.a01 * c,
+                m1.a02 * c,
+                m1.a03 * c,
+                m1.a10 * c,
+                m1.a11 * c,
+                m1.a12 * c,
+                m1.a13 * c,
+                m1.a20 * c,
+                m1.a21 * c,
+                m1.a22 * c,
+                m1.a23 * c,
+                m1.a30 * c,
+                m1.a31 * c,
+                m1.a32 * c,
+                m1.a33 * c
+            );
+            return multEscalar;
+        }
+
+        /**
+         * @return {Matrix4}
+         * Devuelve la transpuesta de la matriz
+         */
+        transpose() {
+            let transpuesta = new Matrix4(
+                this.a00,
+                this.a10,
+                this.a20,
+                this.a30,
+                this.a01,
+                this.a11,
+                this.a21,
+                this.a31,
+                this.a02,
+                this.a12,
+                this.a22,
+                this.a32,
+                this.a03,
+                this.a13,
+                this.a23,
+                this.a33
+            );
+            return transpuesta;
+        }
     }
 
     CG.Matrix4 = Matrix4;

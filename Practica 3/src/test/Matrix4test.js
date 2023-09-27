@@ -158,7 +158,7 @@ function testFrustum() {
     let text = "Prueba frustrum: ";
     let aspect = 800/600;
     let frustrum = CG.Matrix4.frustum(-3,3, -3/aspect, 3/aspect, 3, 100);
-    let test = new CG.Matrix4(-1,0,0,0, 0,4/3,0,0, 0,0,-103/97,-600/97, 0,0,-1,0);
+    let test = new CG.Matrix4(1,0,0,0, 0,4/3,0,0, 0,0,-103/97,-600/97, 0,0,-1,0);
     if (CG.Matrix4.equals(frustrum, test)) {
         console.log(text + "Pasa");
     } else {
