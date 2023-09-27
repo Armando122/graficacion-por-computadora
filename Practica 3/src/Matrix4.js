@@ -294,6 +294,59 @@ var CG = (function(CG) {
         }
 
         /**
+         * @param {Vector3} eye
+         * @param {Vector3} center
+         * @param {Vector3} up
+         * @return {Matrix4}
+         * Devuelve la matriz de vista a partir de la posición del ojo, el centro de interés (coi) y
+         * el vector hacia arriba
+         */
+        static lookAt(eye, center, up) {
+            let negCenter = new CG.Vector3(-1*center.x, -1*center.y, -1*center.z);
+            let subW = CG.Vector3.add(eye, negCenter);
+            let w = subW.normalize();
+            let subU = CG.Vector3.cross(up, w);
+            let u = subU.normalize();
+            let v = CG.Vector3.cross(w, u);
+            let negEye = new CG.Vector3(-1*eye.x, -1*eye.y, -1*eye.z);
+            return new Matrix4(u.x,u.y,u.z, CG.Vector3.dot(negEye, u),
+                               v.x,v.y,v.z, CG.Vector3.dot(negEye, v),
+                               w.x,w.y,w.z, CG.Vector3.dot(negEye, w),
+                               0,0,0,1);
+        }
+
+        /**
+         * @param {Matrix4} m1
+         * @param {Matrix4} m2
+         * @return {Matrix4}
+         * Devuelve la multiplicación de dos matrices
+         */
+        static multiply(m1, m2) {
+            let m1Arr = m1.#toArray();
+            let m2Arr = m2.#toArray();
+            let res = new Array(4);
+            for (let m = 0; m < res.length; m++) {
+                res[m] = new Array(4);
+                for (let l = 0; l < res[m].length; l++) {
+                    res[m][l] = 0;
+                }
+            }
+
+            for (let i = 0; i < res.length; i++) {
+                for (let j = 0; j < res.length; j++) {
+                    for (let k = 0; k < 4; k++) {
+                        res[i][j] += m1Arr[i][k] * m2Arr[k][j];
+                    }
+                }
+            }
+
+            return new Matrix4(res[0][0],res[0][1],res[0][2],res[0][3],
+                               res[1][0],res[1][1],res[1][2],res[1][3],
+                               res[2][0],res[2][1],res[2][2],res[2][3],
+                               res[3][0],res[3][1],res[3][2],res[3][3]);
+        }
+
+        /**
          * @param {Matrix4} m1
          * @param {Number} c
          * @return {Matrix4}
@@ -319,6 +372,73 @@ var CG = (function(CG) {
                 m1.a33 * c
             );
             return multEscalar;
+        }
+
+        /**
+         * @param {Vector4} v
+         * @return {Vector4}
+         * Devuelve un vector resultado de multiplicar la matriz por el vector
+         */
+        multiplyVector(v) {
+            let v1m = new CG.Vector4(this.a00,this.a01,this.a02,this.a03);
+            let v2m = new CG.Vector4(this.a10,this.a11,this.a12,this.a13);
+            let v3m = new CG.Vector4(this.a20,this.a21,this.a22,this.a23);
+            let v4m = new CG.Vector4(this.a30,this.a31,this.a32,this.a33);
+            let res = new CG.Vector4(
+                this.#auxMult(v1m,v),
+                this.#auxMult(v2m,v),
+                this.#auxMult(v3m,v),
+                this.#auxMult(v4m,v)
+            );
+            return res;
+        }
+
+        /**
+         * @param {Number} left
+         * @param {Number} right
+         * @param {Number} bottom
+         * @param {Number} top
+         * @param {Number} near
+         * @param {Number} far
+         * @return {Matrix4}
+         * Devuelve la matriz que corresponde a una proyección ortogonal
+         */
+        static orthographic(left, right, bottom, top, near, far) {
+            let mOrth = new Matrix4(
+                2/(right-left), 0, 0, -(right+left)/(right-left),
+                0, 2/(top-bottom), 0, -(top+bottom)/(top-bottom),
+                0, 0, -2/(near-far), -(far+near)/(near-far),
+                0, 0, 0, 1
+            );
+            return mOrth;
+        }
+
+        /**
+         * @param {Number} fovy
+         * @param {Number} aspect
+         * @param {Number} near
+         * @param {Number} far
+         * @return {Matrix4}
+         * Devuelve una matriz correspondiente a una proyección en perspectiva
+         */
+        static perspective(fovy, aspect, near, far) {
+            let c = 1/Math.tan(fovy/2);
+            let mPersp = new Matrix4(
+                c/aspect, 0, 0, 0,
+                0, c, 0, 0,
+                0, 0, -(far+near)/(far-near), -(2*near*far)/(far-near),
+                0, 0, -1, 0
+            );
+            return mPersp;
+        }
+
+        /*
+         * Función auxiliar de multiply
+         * @return {Number}
+         */
+        #auxMult(v1, v2) {
+            let n = (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z) + (v1.w * v2.w);
+            return n;
         }
 
         /**

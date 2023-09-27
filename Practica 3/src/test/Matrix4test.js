@@ -202,9 +202,9 @@ function testLookAt() {
     let center = new CG.Vector3(0,0,0);
     let up = new CG.Vector3(0,1,0);
     let mLookAt = CG.Matrix4.lookAt(eye, center, up);
-    let test = new CG.Matrix4((
-                   4*Math.sqrt(17))/17, 0, -(3*Math.sqrt(17))/17, 0
-                   -6/Math.sqrt(493), 25/Math.sqrt(493), -8/Math.sqrt(493), 0,
+    let test = new CG.Matrix4(
+                   4/5, 0, -3/5, 0,
+                   -6/(5*Math.sqrt(29)), 5/Math.sqrt(29), -8/(5*Math.sqrt(29)), 0,
                    3/Math.sqrt(29), 2/Math.sqrt(29), 4/Math.sqrt(29), -Math.sqrt(29),
                    0, 0, 0, 1);
     if (CG.Matrix4.equals(mLookAt, test)) {
@@ -248,7 +248,7 @@ function testMultiplyVector() {
     let m = new CG.Matrix4(1,2,2,2, 3,1,3,3, 4,4,1,4, 5,5,5,1);
     let v = new CG.Vector4(5,4,3,1);
     let res = m.multiplyVector(v);
-    let test = new CG.Matrix4(22,29,43,61);
+    let test = new CG.Vector4(21,31,43,61);
     if (CG.Vector4.equals(res, test)) {
         console.log(text + "Pasa");
     } else {
@@ -261,7 +261,7 @@ function testOrthographic() {
     let text = "Prueba ortografica: ";
     let mOrth = CG.Matrix4.orthographic(-3,3, -3/(800/600),3/(800/600), 3,100);
     let test = new CG.Matrix4(
-                   1, 0, 0, 0,
+                   2/6, 0, 0, 0,
                    0, 4/9, 0, 0,
                    0, 0, 2/97, 103/97,
                    0, 0, 0, 1);
@@ -275,12 +275,14 @@ function testOrthographic() {
 // Test perspective
 function testPerspective() {
     let text = "Prueba perspectiva: ";
-    let mPersp = CG.Matrix4.perspective((75 * Math.PI) / 180, 800/600, 0.1, 2000);
+    let theta = (75 * Math.PI) / 180;
+    let mPersp = CG.Matrix4.perspective(theta, 800/600, 0.1, 2000);
+    let c = 1/Math.tan(theta/2);
     let test = new CG.Matrix4(
-                   0.9774, 0, 0, 0,
-                   0, 1.30, 0, 0,
+                   c/(800/600), 0, 0, 0,
+                   0, c, 0, 0,
                    0, 0, -20001/19999, -4000/19999,
-                   0, 0, 0, 1);
+                   0, 0, -1, 0);
     if (CG.Matrix4.equals(mPersp, test)) {
         console.log(text + "Pasa");
     } else {
