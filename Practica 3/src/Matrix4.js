@@ -442,6 +442,127 @@ var CG = (function(CG) {
         }
 
         /**
+         * @param {Number} theta
+         * @return {Matrix4}
+         * Devuelve la matriz de rotación 3D sobre X con el ángulo en radianes
+         */
+        static rotateX(theta) {
+            return new Matrix4(
+                1, 0, 0, 0,
+                0, Math.cos(theta), -Math.sin(theta), 0,
+                0, Math.sin(theta), Math.cos(theta), 0,
+                0, 0, 0, 1
+            );
+        }
+
+        /**
+         * @param {Number} theta
+         * @return {Matrix4}
+         * Devuelve la matriz de rotación 3D sobre Y con el ángulo en radianes
+         */
+        static rotateY(theta) {
+            return new Matrix4(
+                Math.cos(theta), 0, Math.sin(theta), 0,
+                0, 1, 0, 0,
+                -Math.sin(theta), 0, Math.cos(theta), 0,
+                0, 0, 0, 1
+            );
+        }
+
+        /**
+         * @param {Number} theta
+         * @return {Matrix4}
+         * Devuelve la matriz de rotación 3D sobre Z con el ángulo en radianes
+         */
+        static rotateZ(theta) {
+            return new Matrix4(
+                Math.cos(theta), -Math.sin(theta), 0, 0,
+                Math.sin(theta), Math.cos(theta), 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            );
+        }
+
+        /**
+         * @param {Vector3} v
+         * @return {Matrix4}
+         * Devuelve la matriz de escalamiento 3D con los componentes determinados por el vector v
+         */
+        static scale(v) {
+            return new Matrix4(
+                v.x, 0, 0, 0,
+                0, v.y, 0, 0,
+                0, 0, v.z, 0,
+                0, 0, 0, 1
+            );
+        }
+
+        /**
+         * @param {Number} a00
+         * @param {Number} a01
+         * @param {Number} a02
+         * @param {Number} a03
+         * @param {Number} a10
+         * @param {Number} a11
+         * @param {Number} a12
+         * @param {Number} a13
+         * @param {Number} a20
+         * @param {Number} a21
+         * @param {Number} a22
+         * @param {Number} a23
+         * @param {Number} a30
+         * @param {Number} a31
+         * @param {Number} a32
+         * @param {Number} a33
+         * Asinga los nuevos valores a los componentes de la matriz.
+         */
+        set(a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30, a31, a32, a33) {
+            this.a00 = a00;
+            this.a01 = a01;
+            this.a02 = a02;
+            this.a03 = a03;
+            this.a10 = a10;
+            this.a11 = a11;
+            this.a12 = a12;
+            this.a13 = a13;
+            this.a20 = a20;
+            this.a21 = a21;
+            this.a22 = a22;
+            this.a23 = a23;
+            this.a30 = a30;
+            this.a31 = a31;
+            this.a32 = a32;
+            this.a33 = a33;
+        }
+
+        /**
+         * @param {Matrix4} m1
+         * @param {Matrix4} m2
+         * @return {Matrix4}
+         * Devuelve la matriz resultante de restarle a la matriz m1 los componenetes de m2
+         */
+        static substract(m1,m2) {
+            let k = -1;
+            let nuevaM2 = Matrix4.multiplyScalar(m2, k);
+            let resta = Matrix4.add(m1, nuevaM2);
+            return resta;
+        }
+
+        /**
+         * @param {Vector3} v
+         * @return {Matrix4}
+         * Devuelve una amtriz de traslación 3D cuyos componentes están dados por el vector
+         */
+        static translate(v) {
+            return new Matrix4(
+                1, 0, 0, v.x,
+                0, 1, 0, v.y,
+                0, 0, 1, v.z,
+                0, 0, 0, 1
+            );
+        }
+
+        /**
          * @return {Matrix4}
          * Devuelve la transpuesta de la matriz
          */

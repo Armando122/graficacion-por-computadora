@@ -374,7 +374,7 @@ function testSubstract() {
     let res1 = CG.Matrix4.substract(m1,m2);
     let res2 = CG.Matrix4.substract(m2,m1);
     let test1 = new CG.Matrix4(3,-1,-1,-1, -1,4,-1,-1, -1,-1,-10,-1, -1,-1,-1,0);
-    let test2 = new CG.Matrix4(-3,1,1,1, 1,-4,1,1, 1,1,-8,1, 1,1,1,0);
+    let test2 = new CG.Matrix4(-3,1,1,1, 1,-4,1,1, 1,1,10,1, 1,1,1,0);
     if (CG.Matrix4.equals(res1, test1) && CG.Matrix4.equals(res2, test2)) {
         console.log(text + "Pasa");
     } else {
