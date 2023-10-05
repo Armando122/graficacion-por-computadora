@@ -63,6 +63,15 @@ var CG = (function(CG) {
         }
 
         /**
+         * @return {Array}
+         * Convierte la matriz en un arreglo.
+         */
+        toArray() {
+            return [this.a00, this.a10, this.a20, this.a30, this.a01, this.a11, this.a21, this.a31, this.a02, this.a12, this.a22, this.a32, this.a03, this.a13,
+                this.a23, this.a33];
+        }
+
+        /**
          * @param {Matrix4} m1
          * @param {Matrix4} m2
          * @return {Matrix4}
@@ -95,7 +104,7 @@ var CG = (function(CG) {
          * Devuelve la matriz adjunta o de cofactores
          */
         adjoint() {
-            let m = this.#toArray();
+            let m = this.#toArrayAux();
             let mAux = new Array(4);
             mAux[0] = new Array(4);
             mAux[1] = new Array(4);
@@ -154,7 +163,7 @@ var CG = (function(CG) {
         /*
         * Devuelve la matriz en un arreglo
         */
-       #toArray() {
+       #toArrayAux() {
         return [
             [this.a00, this.a01, this.a02, this.a03],
             [this.a10, this.a11, this.a12, this.a13],
@@ -180,7 +189,7 @@ var CG = (function(CG) {
         * Devuelve el determinante de la matriz
         */
        determinant() {
-            let m = this.#toArray();
+            let m = this.#toArrayAux();
             let i = 0;
             let res = 0;
 
@@ -322,8 +331,8 @@ var CG = (function(CG) {
          * Devuelve la multiplicación de dos matrices
          */
         static multiply(m1, m2) {
-            let m1Arr = m1.#toArray();
-            let m2Arr = m2.#toArray();
+            let m1Arr = m1.#toArrayAux();
+            let m2Arr = m2.#toArrayAux();
             let res = new Array(4);
             for (let m = 0; m < res.length; m++) {
                 res[m] = new Array(4);
