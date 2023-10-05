@@ -58,6 +58,7 @@ function testConstructorM4() {
 function testAdd(params) {
     let text = "Prueba suma 4x4: ";
     let m1 = new CG.Matrix4(1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16);
+    console.log(m1.toArray());
     let m2 = new CG.Matrix4(1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1);
     let res = CG.Matrix4.add(m1, m2);
     let test = new CG.Matrix4(2,3,4,5, 6,7,8,9, 10,11,12,13, 14,15,16,17);
