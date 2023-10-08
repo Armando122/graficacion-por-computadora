@@ -14,7 +14,7 @@ var CG = (function(CG) {
          */
         constructor(gl, color, radius, height, Nu, Nv, initial_transform) {
             g_radius = (radius || 1);
-            g_height = (height || 1)
+            g_height = (height || 1);
             g_Nu = Nu || 2;
             g_Nv = Nv || 2;
 
