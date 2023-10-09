@@ -69,7 +69,7 @@ var CG = (function(CG) {
          * @param {Matrix4} projectionViewMatrix
          * Función que dibuja el objeto geométrico en modo wireframe
          */
-        /*drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
+        drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
             gl.enableVertexAttribArray(positionAttributeLocation);
             gl.bindBuffer(gl.ARRAY_BUFFER, this.positionbuffer);
             gl.vertexAttribPointer(positionAttributeLocation, 3, gl.FLOAT, false, 0, 0);
@@ -82,7 +82,7 @@ var CG = (function(CG) {
 
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             gl.drawElements(gl.LINE_STRIP, this.num_elements, gl.UNSIGNED_SHORT, 0);
-        }*/
+        }
 
         /**
          * Función que devuelve un arreglo con los vértices del tetraedro.
