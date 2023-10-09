@@ -66,12 +66,12 @@ var CG = (function(CG) {
          * @param {WebGLUniformLocation} PVM_matrixLocation
          * @param {Matrix4} projectionViewMatrix
          */
-        /*drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
+        drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
             gl.enableVertexAttribArray(positionAttributeLocation);
             gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
             gl.vertexAttribPointer(positionAttributeLocation, 3, gl.FLOAT, false, 0, 0);
   
-            gl.uniform4fv(colorUniformLocation, this.color);
+            gl.uniform4fv(colorUniformLocation, [0,0,0,1]);
         
             let projectionViewModelMatrix = CG.Matrix4.multiply(projectionViewMatrix, this.initial_transform);
   
@@ -79,7 +79,7 @@ var CG = (function(CG) {
   
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             gl.drawElements(gl.LINE_STRIP, this.num_elements, gl.UNSIGNED_SHORT, 0);
-        }*/
+        }
 
         /**
          * Función que devuelve los vértices de la esfera

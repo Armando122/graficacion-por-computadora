@@ -1,9 +1,11 @@
+let gl, program;
+
 window.addEventListener("load", function(evt) {
     // se obtiene una referencia al canvas
     let canvas = document.getElementById("the_canvas");
   
     // se obtiene una referencia al contexto de render de WebGL
-    const gl = canvas.getContext("webgl");
+    gl = canvas.getContext("webgl");
   
     // si el navegador no soporta WebGL la variable gl no está definida y se lanza una excepción
     if (!gl) throw "WebGL no soportado";
@@ -19,15 +21,15 @@ window.addEventListener("load", function(evt) {
     let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
   
     // se crea el programa que se enviara a la tarjeta de video, el cual está compuesto por los dos shader que se crearon anteriormente
-    let program = createProgram(gl, vertexShader, fragmentShader);
+    program = createProgram(gl, vertexShader, fragmentShader);
   
     // se construye una referencia al attribute "a_position" definido en el shader
-    let positionAttributeLocation = gl.getAttribLocation(program, "a_position");
-    let colorUniformLocation = gl.getUniformLocation(program, "u_color");
-    let PVM_matrixLocation = gl.getUniformLocation(program, "u_PVM_matrix");
+    positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+    colorUniformLocation = gl.getUniformLocation(program, "u_color");
+    PVM_matrixLocation = gl.getUniformLocation(program, "u_PVM_matrix");
   
     // se crean y posicionan los modelos geométricos, uno de cada tipo
-    let geometry = [
+    geometry = [
       new CG.Cilindro(
         gl, 
         [1, 0, 0, 1], 
@@ -94,7 +96,7 @@ window.addEventListener("load", function(evt) {
     let projectionMatrix = CG.Matrix4.perspective(75*Math.PI/180, canvas.width/canvas.height, 1, 2000);;
   
     // se define una matriz que combina las transformaciones de la vista y de proyección
-    let viewProjectionMatrix = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
+    viewProjectionMatrix = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
   
     // se encapsula el código de dibujo en una función
     function draw() {
@@ -134,6 +136,88 @@ window.addEventListener("load", function(evt) {
     draw()
   
   });
+
+  /**
+   * Función para determinar si se dibujan los obejtos geométricos
+   * en modo wireframe o en modo normal usando el color asignado
+   */
+  function wireframeMode() {
+    let checkbo = document.getElementById("wire_ckbx");
+    
+    if (checkbo.checked) {
+      wireframe();
+    } else {
+      draw();
+    }
+  }
+
+  // se encapsula el código de dibujo en una función
+  function wireframe() {
+    // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
+    gl.enable(gl.DEPTH_TEST);
+
+    // se le indica a WebGL cual es el tamaño de la ventana donde se despliegan los gráficos
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
+    gl.clearColor(0, 0, 0, 0);
+
+    // se limpian tanto el buffer de color, como el buffer de profundidad
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    // se le indica a WebGL que programa debe utilizar
+    // recordando, un programa en este contexto es una pareja compuesta por un shader de vértices y uno de fragmentos
+
+    // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
+    // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
+    gl.useProgram(program);
+
+    // se itera sobre cada objeto geométrico definido
+    for (let i=0; i<geometry.length; i++) {
+      // se dibuja la geometría
+      geometry[i].drawWireframe(
+        gl, // referencia al contexto de render de WebGL
+        positionAttributeLocation, // referencia a: attribute vec4 a_position;
+        colorUniformLocation, // referencia a: uniform vec4 u_color;
+        PVM_matrixLocation, // referencia a: uniform mat4 u_PVM_matrix;
+        viewProjectionMatrix // la matriz de transformación de la vista y proyección
+        );
+    }
+  }
+
+  function draw() {
+    // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
+    gl.enable(gl.DEPTH_TEST);
+
+    // se le indica a WebGL cual es el tamaño de la ventana donde se despliegan los gráficos
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
+    gl.clearColor(0, 0, 0, 0);
+
+    // se limpian tanto el buffer de color, como el buffer de profundidad
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    // se le indica a WebGL que programa debe utilizar
+    // recordando, un programa en este contexto es una pareja compuesta por un shader de vértices y uno de fragmentos
+
+    // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
+    // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
+    gl.useProgram(program);
+
+    // se itera sobre cada objeto geométrico definido
+    for (let i=0; i<geometry.length; i++) {
+      // se dibuja la geometría
+      geometry[i].draw(
+        gl, // referencia al contexto de render de WebGL
+        positionAttributeLocation, // referencia a: attribute vec4 a_position;
+        colorUniformLocation, // referencia a: uniform vec4 u_color;
+        PVM_matrixLocation, // referencia a: uniform mat4 u_PVM_matrix;
+        viewProjectionMatrix // la matriz de transformación de la vista y proyección
+        );
+    }
+  }
+
   
   
   //////////////////////////////////////////////////////////
