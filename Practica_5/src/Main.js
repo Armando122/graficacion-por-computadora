@@ -141,13 +141,21 @@ window.addEventListener("load", function(evt) {
    * Función para determinar si se dibujan los obejtos geométricos
    * en modo wireframe o en modo normal usando el color asignado
    */
-  function wireframeMode() {
-    let checkbo = document.getElementById("wire_ckbx");
+  function selectDrawMode() {
+    let checkboWire = document.getElementById("wire_ckbx");
+    let checkboEspec = document.getElementById("especular_ckbx");
     
-    if (checkbo.checked) {
+    if (checkboWire.checked) {
       wireframe();
-    } else {
+      return;
+    } 
+    if (checkboEspec.checked) {
+      console.log("Dibujara especular y difusa");
+      return;
+    }
+    if (!checkboWire.checked && !checkboEspec.checked) {
       draw();
+      console.log("Dibujara solo difusa");
     }
   }
 
