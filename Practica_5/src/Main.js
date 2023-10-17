@@ -25,8 +25,11 @@ window.addEventListener("load", function(evt) {
   
     // se construye una referencia al attribute "a_position" definido en el shader
     positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+    normalAttributeLocation = gl.getAttribLocation(program, "a_normal");
     colorUniformLocation = gl.getUniformLocation(program, "u_color");
+    lightUniformLocation = gl.getUniformLocation(program, "u_light_position");
     PVM_matrixLocation = gl.getUniformLocation(program, "u_PVM_matrix");
+    VM_matrixLocation = gl.getUniformLocation(program, "u_VM_matrix");
   
     // se crean y posicionan los modelos geométricos, uno de cada tipo
     geometry = [
@@ -94,9 +97,11 @@ window.addEventListener("load", function(evt) {
   
     // se construye la matriz de proyección en perspectiva
     let projectionMatrix = CG.Matrix4.perspective(75*Math.PI/180, canvas.width/canvas.height, 1, 2000);;
+
+    // Se construye la posición de la luz
   
     // se define una matriz que combina las transformaciones de la vista y de proyección
-    viewProjectionMatrix = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
+    //viewProjectionMatrix = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
   
     // se encapsula el código de dibujo en una función
     function draw() {
@@ -118,6 +123,10 @@ window.addEventListener("load", function(evt) {
       // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
       // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
       gl.useProgram(program);
+
+      // Ubicación de la luz
+
+      // Configuración de luces (color, coeficientes)
   
       // se itera sobre cada objeto geométrico definido
       for (let i=0; i<geometry.length; i++) {
@@ -125,9 +134,12 @@ window.addEventListener("load", function(evt) {
         geometry[i].draw(
           gl, // referencia al contexto de render de WebGL
           positionAttributeLocation, // referencia a: attribute vec4 a_position;
+          normalAttributeLocation, // Referencia a: a_normal
           colorUniformLocation, // referencia a: uniform vec4 u_color;
           PVM_matrixLocation, // referencia a: uniform mat4 u_PVM_matrix;
-          viewProjectionMatrix // la matriz de transformación de la vista y proyección
+          VM_matrixLocation, // Referencia a: u_VM_matrix
+          projectionMatrix, 
+          viewMatrix 
           );
       }
     }
