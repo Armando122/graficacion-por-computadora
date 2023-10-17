@@ -36,10 +36,18 @@
 
   <script id="2d-vertex-shader" type="vertex-shader">
   attribute vec4 a_position;
+  attribute vec3 a_normal;
 
+  uniform mat4 u_VM_matrix;
   uniform mat4 u_PVM_matrix;
+
+  varying vec3 v_position;
+  varying vec3 v_normal;
   
   void main() {
+    v_normal = vec3( u_VM_matrix * vec4(a_normal, 0) );
+    v_position = vec3( u_VM_matrix * a_position );
+
     gl_Position = u_PVM_matrix * a_position;
   }
   </script>
@@ -47,10 +55,30 @@
   <script id="2d-fragment-shader" type="fragment-shader">
   precision mediump float;
 
+  varying vec3 v_position;
+  varying vec3 v_normal;
+
+  // Posición de la luz
+  uniform vec3 u_light_position;
+  // Color del objeto
   uniform vec4 u_color;
+  // Color de la luz ambiental
+  uniform vec3 u_light_color;
+  // Coeficiente ambiental
+  // Color de la luz difusa
+  // Coeficiente difuso
+  // Color de la luz especular
+  // Coeficiente especular
+  // Brillo especular
 
   void main() {
-    gl_FragColor = u_color;
+    vec3 to_light = normalize( u_light_position - v_position );
+    vec3 fragment_normal = normalize(v_normal);
+
+    float cos_angle = max(dot(fragment_normal, to_light), 0.0);
+
+    // Calculo de relfexión difusa
+    gl_FragColor = vec4(vec3(u_color) * cos_angle, u_color.a);
   }
   </script>
 
