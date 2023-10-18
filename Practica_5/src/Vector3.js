@@ -32,6 +32,14 @@ var CG = (function(CG) {
             return vect;
         }
 
+        static substract(u, v) {
+            return new Vector3(
+              u.x - v.x,
+              u.y - v.y,
+              u.z - v.z
+            );
+          }
+
         /**
          * @return {Vector3}
          * Devuelve la copia del vector que invocó la función
