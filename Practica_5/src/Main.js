@@ -102,7 +102,7 @@ window.addEventListener("load", function(evt) {
       ),
       new CG.Tetraedro(
         gl, 
-        [0.5, 0.5, 0.5, 1], 
+        [0.5, 0.5, 0.5, 1],
         2, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, 5))
       ),
