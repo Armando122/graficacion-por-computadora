@@ -59,7 +59,7 @@ window.addEventListener("load", function(evt) {
   
     // se crean y posicionan los modelos geométricos, uno de cada tipo
     geometry = [
-      new CG.Cilindro(
+      /*new CG.Cilindro(
         gl, 
         [1, 0, 0, 1], 
         2, 2, 16, 16, 
@@ -87,7 +87,7 @@ window.addEventListener("load", function(evt) {
         [1, 0 , 1, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, 0))
-      ),
+      ),*/
       new CG.Octaedro(
         gl, 
         [1, 1, 0, 1], 
@@ -106,12 +106,12 @@ window.addEventListener("load", function(evt) {
         2, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, 5))
       ),
-      new CG.Toro(
+      /*new CG.Toro(
         gl, 
         [0.25, 0.25, 0.25, 1], 
         4, 1, 16, 16, 
         CG.Matrix4.translate(new CG.Vector3(5, 0, 5))
-      ),
+      ),*/
     ];
   
     // se define la posición de la cámara (o el observador o el ojo)
@@ -158,7 +158,7 @@ window.addEventListener("load", function(evt) {
       // Color de la luz ambiental
       gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);  //L_A
       // Coeficiente ambiental
-      gl.uniform1f(coefficientEnvUniformLocation, 0.001);   //K_A
+      gl.uniform1f(coefficientEnvUniformLocation, 0);   //K_A
       // Color del luz difusa
       gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1); //L_D
       // Coeficiente difuso
@@ -204,12 +204,12 @@ window.addEventListener("load", function(evt) {
       return;
     } 
     if (checkboEspec.checked) {
-      draw(1);
+      draw(1, 0.0985);
       console.log("Dibujara especular y difusa");
       return;
     }
     if (!checkboWire.checked && !checkboEspec.checked) {
-      draw(0);
+      draw(0, 0);
       console.log("Dibujara solo difusa");
     }
   }
@@ -255,7 +255,7 @@ window.addEventListener("load", function(evt) {
    * @param {Number} especular
    * Recibe el coeficiente especular, si es cero el modelo no tiene iluminación especular
    */
-  function draw(especular) {
+  function draw(especular, coef_env) {
     // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
     gl.enable(gl.DEPTH_TEST);
   
@@ -282,7 +282,7 @@ window.addEventListener("load", function(evt) {
     // Color de la luz ambiental
     gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);
     // Coeficiente ambiental
-    gl.uniform1f(coefficientEnvUniformLocation, 0.001);
+    gl.uniform1f(coefficientEnvUniformLocation, coef_env);
     // Color del luz difusa
     gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1);
     // Coeficiente difuso
