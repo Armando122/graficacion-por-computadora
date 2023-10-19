@@ -70,14 +70,16 @@ window.addEventListener("load", function(evt) {
         [0, 1, 0, 1], 
         2, 2, 16, 16, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, -5))
-      ),
+      ),*/
       new CG.Dodecaedro(
         gl, 
         [0, 0, 1, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(5, 0, -5))
+        /*/CG.Matrix4.multiply( CG.Matrix4.translate(new CG.Vector3(-5, 0, -5)), 
+                             CG.Matrix4.multiply(CG.Matrix4.rotateX(0*Math.PI/180), CG.Matrix4.rotateY(180*Math.PI/180)))*/
       ),
-      new CG.Esfera(
+      /*new CG.Esfera(
         gl, 
         [0, 1, 1, 1], 
         2, 16, 16, 
@@ -204,7 +206,7 @@ window.addEventListener("load", function(evt) {
       return;
     } 
     if (checkboEspec.checked) {
-      draw(1, 0.0985);
+      draw(1, 0.0685);
       console.log("Dibujara especular y difusa");
       return;
     }
