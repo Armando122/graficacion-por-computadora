@@ -111,8 +111,8 @@
     vec3 dif_ip = k_d * l_d * cos_angle;
 
     // I_p especular
-    vec3 r = (2.0 * fragment_normal * dot(fragment_normal, to_light)) - to_light;
-    vec3 v = -1.0 * v_normal;
+    vec3 r = normalize(2.0 * fragment_normal * dot(fragment_normal, to_light) - to_light);
+    vec3 v = normalize(-v_position);
     float cos_angle_alpha = pow(max(dot(r, v), 0.0), alpha_s);
     vec3 spec_ip = k_s * l_s * cos_angle_alpha;
 

@@ -76,7 +76,7 @@ window.addEventListener("load", function(evt) {
         [0, 0, 1, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(5, 0, -5))
-        /*/CG.Matrix4.multiply( CG.Matrix4.translate(new CG.Vector3(-5, 0, -5)), 
+        /*CG.Matrix4.multiply( CG.Matrix4.translate(new CG.Vector3(-5, 0, -5)), 
                              CG.Matrix4.multiply(CG.Matrix4.rotateX(0*Math.PI/180), CG.Matrix4.rotateY(180*Math.PI/180)))*/
       ),
       /*new CG.Esfera(
@@ -84,12 +84,12 @@ window.addEventListener("load", function(evt) {
         [0, 1, 1, 1], 
         2, 16, 16, 
         CG.Matrix4.translate(new CG.Vector3(-5, 0, 0))
-      ),
+      ),*/
       new CG.Icosaedro(gl, 
         [1, 0 , 1, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, 0))
-      ),*/
+      ),
       new CG.Octaedro(
         gl, 
         [1, 1, 0, 1], 
@@ -160,7 +160,7 @@ window.addEventListener("load", function(evt) {
       // Color de la luz ambiental
       gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);  //L_A
       // Coeficiente ambiental
-      gl.uniform1f(coefficientEnvUniformLocation, 0);   //K_A
+      gl.uniform1f(coefficientEnvUniformLocation, 0.0685);   //K_A
       // Color del luz difusa
       gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1); //L_D
       // Coeficiente difuso
@@ -211,7 +211,7 @@ window.addEventListener("load", function(evt) {
       return;
     }
     if (!checkboWire.checked && !checkboEspec.checked) {
-      draw(0, 0);
+      draw(0, 0.0685);
       console.log("Dibujara solo difusa");
     }
   }
