@@ -44,7 +44,7 @@ var CG = (function(CG) {
          * @param {WebGLUniformLocation} PVM_matrixLocation
          * @param {Matrix4} projectionViewMatrix
          */
-        draw(gl, positionAttributeLocation, normalAttributeLocation, colorUniformLocation, PVM_matrixLocation, VM_MatrixLocation, projectionViewMatrix, viewMatrix) {
+        draw(gl, positionAttributeLocation, normalAttributeLocation, colorUniformLocation, PVM_matrixLocation, VM_MatrixLocation, projectionMatrix, viewMatrix) {
             // Buffer de posiciones
             gl.enableVertexAttribArray(positionAttributeLocation);
             gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
@@ -180,7 +180,8 @@ var CG = (function(CG) {
                 );
             }
             
-            return normals;}
+            return normals;
+        }
 
         /**
          * Función que devuelve las caras de la esfera
