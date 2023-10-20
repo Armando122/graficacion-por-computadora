@@ -134,7 +134,7 @@ var CG = (function(CG) {
          * Función que devuelve los vértices del cono
          */
         getVertices() {
-          let verticesW = this.getVerticesW();
+            let verticesW = this.getVerticesW();
             let faces = this.getFaces();
             let vertices = [];
 
@@ -176,7 +176,7 @@ var CG = (function(CG) {
           }
           
           return normals;
-      }
+        }
 
         /**
          * Función que devuelve las caras del cono
