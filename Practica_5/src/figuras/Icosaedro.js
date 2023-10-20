@@ -60,6 +60,7 @@ var CG = (function(CG) {
             let viewModelMatrix = CG.Matrix4.multiply(viewMatrix, this.initial_transform);
             gl.uniformMatrix4fv(VM_MatrixLocation, false, viewModelMatrix.toArray());
 
+
             // PVM
             let projectionViewModelMatrix = CG.Matrix4.multiply(projectionMatrix, viewModelMatrix);
             gl.uniformMatrix4fv(PVM_matrixLocation, false, projectionViewModelMatrix.toArray());

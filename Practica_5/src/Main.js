@@ -3,6 +3,8 @@ let gl, program, programW;
 window.addEventListener("load", function(evt) {
     // se obtiene una referencia al canvas
     let canvas = document.getElementById("the_canvas");
+    let checkboWire = document.getElementById("wire_ckbx");
+    let checkboEspec = document.getElementById("especular_ckbx");
   
     // se obtiene una referencia al contexto de render de WebGL
     gl = canvas.getContext("webgl");
@@ -79,16 +81,17 @@ window.addEventListener("load", function(evt) {
         /*CG.Matrix4.multiply( CG.Matrix4.translate(new CG.Vector3(-5, 0, -5)), 
                              CG.Matrix4.multiply(CG.Matrix4.rotateX(0*Math.PI/180), CG.Matrix4.rotateY(180*Math.PI/180)))*/
       ),
-      /*new CG.Esfera(
+      new CG.Esfera(
         gl, 
         [0, 1, 1, 1], 
         2, 16, 16, 
         CG.Matrix4.translate(new CG.Vector3(-5, 0, 0))
-      ),*/
+      ),
       new CG.Icosaedro(gl, 
         [1, 0 , 1, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, 0))
+        //CG.Matrix4.scale(new CG.Vector3(2,1,1))
       ),
       new CG.Octaedro(
         gl, 
@@ -158,11 +161,11 @@ window.addEventListener("load", function(evt) {
 
       /* Configuración de luces (color, coeficientes) */
       // Color de la luz ambiental
-      gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);  //L_A
+      //gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);  //L_A
       // Coeficiente ambiental
       gl.uniform1f(coefficientEnvUniformLocation, 0.0685);   //K_A
       // Color del luz difusa
-      gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1); //L_D
+      //gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1); //L_D
       // Coeficiente difuso
       gl.uniform1f(coefficientDifuseUniformLocation, 1);      //K_D
       // Color de la luz especular
@@ -174,6 +177,12 @@ window.addEventListener("load", function(evt) {
   
       // se itera sobre cada objeto geométrico definido
       for (let i=0; i<geometry.length; i++) {
+        let figura = geometry[i];
+        // Color de la luz ambiental
+        gl.uniform3f(colorEnvLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);  //L_A
+        // Color del luz difusa
+        gl.uniform3f(colorDifuseLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]); //L_D
+
         // se dibuja la geometría
         geometry[i].draw(
           gl, // referencia al contexto de render de WebGL
@@ -207,12 +216,10 @@ window.addEventListener("load", function(evt) {
     } 
     if (checkboEspec.checked) {
       draw(1, 0.0685);
-      console.log("Dibujara especular y difusa");
       return;
     }
     if (!checkboWire.checked && !checkboEspec.checked) {
       draw(0, 0.0685);
-      console.log("Dibujara solo difusa");
     }
   }
 
@@ -282,11 +289,11 @@ window.addEventListener("load", function(evt) {
 
     /* Configuración de luces (color, coeficientes) */
     // Color de la luz ambiental
-    gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);
+    //gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);
     // Coeficiente ambiental
     gl.uniform1f(coefficientEnvUniformLocation, coef_env);
     // Color del luz difusa
-    gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1);
+    //gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1);
     // Coeficiente difuso
     gl.uniform1f(coefficientDifuseUniformLocation, 1);
     // Color de la luz especular
@@ -298,6 +305,12 @@ window.addEventListener("load", function(evt) {
 
     // se itera sobre cada objeto geométrico definido
     for (let i=0; i<geometry.length; i++) {
+      let figura = geometry[i];
+      // Color de la luz ambiental
+      gl.uniform3f(colorEnvLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);  //L_A
+      // Color del luz difusa
+      gl.uniform3f(colorDifuseLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);
+      
       // se dibuja la geometría
       geometry[i].draw(
         gl, // referencia al contexto de render de WebGL

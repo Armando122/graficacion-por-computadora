@@ -121,7 +121,7 @@
 
     // Calculo de relfexión difusa
     //gl_FragColor = vec4(vec3(u_color) * spec_ip, u_color.a);
-    gl_FragColor = vec4(vec3(u_color) * ip, u_color.a);
+    gl_FragColor = vec4(ip, u_color.a);
   }
   </script>
 
