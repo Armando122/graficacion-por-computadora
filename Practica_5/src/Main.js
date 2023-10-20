@@ -61,12 +61,12 @@ window.addEventListener("load", function(evt) {
   
     // se crean y posicionan los modelos geométricos, uno de cada tipo
     geometry = [
-      /*new CG.Cilindro(
+      new CG.Cilindro(
         gl, 
         [1, 0, 0, 1], 
         2, 2, 16, 16, 
         CG.Matrix4.translate(new CG.Vector3(-5, 0, -5))
-      ),*/
+      ),
       new CG.Cono(
         gl, 
         [0, 1, 0, 1], 
