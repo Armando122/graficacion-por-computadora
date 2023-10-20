@@ -71,18 +71,6 @@ var CG = (function(CG) {
           
           // Dibujo
           gl.drawArrays(gl.TRIANGLES, 0, this.num_elements);
-            /*gl.enableVertexAttribArray(positionAttributeLocation);
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-            gl.vertexAttribPointer(positionAttributeLocation, 3, gl.FLOAT, false, 0, 0);
-  
-            gl.uniform4fv(colorUniformLocation, this.color);
-        
-            let projectionViewModelMatrix = CG.Matrix4.multiply(projectionViewMatrix, this.initial_transform);
-  
-            gl.uniformMatrix4fv(PVM_matrixLocation, false, projectionViewModelMatrix.toArray());
-  
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-            gl.drawElements(gl.TRIANGLES, this.num_elements, gl.UNSIGNED_SHORT, 0);*/
         }
 
         /**
@@ -120,18 +108,6 @@ var CG = (function(CG) {
   
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
             gl.drawElements(gl.LINE_STRIP, num_elementsL, gl.UNSIGNED_SHORT, 0);
-            /*gl.enableVertexAttribArray(positionAttributeLocation);
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-            gl.vertexAttribPointer(positionAttributeLocation, 3, gl.FLOAT, false, 0, 0);
-  
-            gl.uniform4fv(colorUniformLocation, [0,0,0,1]);
-        
-            let projectionViewModelMatrix = CG.Matrix4.multiply(projectionViewMatrix, this.initial_transform);
-  
-            gl.uniformMatrix4fv(PVM_matrixLocation, false, projectionViewModelMatrix.toArray());
-  
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-            gl.drawElements(gl.LINE_STRIP, this.num_elements, gl.UNSIGNED_SHORT, 0);*/
         }
 
         /**
