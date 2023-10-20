@@ -158,11 +158,11 @@ window.addEventListener("load", function(evt) {
 
       /* Configuración de luces (color, coeficientes) */
       // Color de la luz ambiental
-      gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);  //L_A
+      //gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);  //L_A
       // Coeficiente ambiental
       gl.uniform1f(coefficientEnvUniformLocation, 0.0685);   //K_A
       // Color del luz difusa
-      gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1); //L_D
+      //gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1); //L_D
       // Coeficiente difuso
       gl.uniform1f(coefficientDifuseUniformLocation, 1);      //K_D
       // Color de la luz especular
@@ -174,6 +174,12 @@ window.addEventListener("load", function(evt) {
   
       // se itera sobre cada objeto geométrico definido
       for (let i=0; i<geometry.length; i++) {
+        let figura = geometry[i];
+        // Color de la luz ambiental
+        gl.uniform3f(colorEnvLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);  //L_A
+        // Color del luz difusa
+        gl.uniform3f(colorDifuseLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);
+
         // se dibuja la geometría
         geometry[i].draw(
           gl, // referencia al contexto de render de WebGL
@@ -282,11 +288,11 @@ window.addEventListener("load", function(evt) {
 
     /* Configuración de luces (color, coeficientes) */
     // Color de la luz ambiental
-    gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);
+    //gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);
     // Coeficiente ambiental
     gl.uniform1f(coefficientEnvUniformLocation, coef_env);
     // Color del luz difusa
-    gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1);
+    //gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1);
     // Coeficiente difuso
     gl.uniform1f(coefficientDifuseUniformLocation, 1);
     // Color de la luz especular
@@ -298,6 +304,12 @@ window.addEventListener("load", function(evt) {
 
     // se itera sobre cada objeto geométrico definido
     for (let i=0; i<geometry.length; i++) {
+      let figura = geometry[i];
+      // Color de la luz ambiental
+      gl.uniform3f(colorEnvLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);  //L_A
+      // Color del luz difusa
+      gl.uniform3f(colorDifuseLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);
+      
       // se dibuja la geometría
       geometry[i].draw(
         gl, // referencia al contexto de render de WebGL
