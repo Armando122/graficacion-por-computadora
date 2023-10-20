@@ -78,12 +78,10 @@ window.addEventListener("load", function(evt) {
         [0, 0, 1, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(5, 0, -5))
-        /*CG.Matrix4.multiply( CG.Matrix4.translate(new CG.Vector3(-5, 0, -5)), 
-                             CG.Matrix4.multiply(CG.Matrix4.rotateX(0*Math.PI/180), CG.Matrix4.rotateY(180*Math.PI/180)))*/
       ),
       new CG.Esfera(
         gl, 
-        [0, 1, 1, 1], 
+        [0, 1, 1, 1],
         2, 16, 16, 
         CG.Matrix4.translate(new CG.Vector3(-5, 0, 0))
       ),
@@ -110,12 +108,12 @@ window.addEventListener("load", function(evt) {
         2, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, 5))
       ),
-      /*new CG.Toro(
-        gl, 
+      new CG.Toro(
+        gl,
         [0.25, 0.25, 0.25, 1], 
         4, 1, 16, 16, 
         CG.Matrix4.translate(new CG.Vector3(5, 0, 5))
-      ),*/
+      ),
     ];
   
     // se define la posición de la cámara (o el observador o el ojo)
