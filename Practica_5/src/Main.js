@@ -28,7 +28,7 @@ window.addEventListener("load", function(evt) {
     let vertexShaderW = createShader(gl, gl.VERTEX_SHADER, vertexShaderSourceW);
     let fragmentShaderSourceW = document.getElementById("2d-fragment-shader-wireframe").text;
     let fragmentShaderW = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSourceW);
-    programW = createProgram(gl, vertexShaderW, fragmentShaderW)
+    programW = createProgram(gl, vertexShaderW, fragmentShaderW);
     positionAttributeLocationW = gl.getAttribLocation(programW, "a_position_w");
     colorUniformLocationW = gl.getUniformLocation(programW, "u_color_w");
     PVM_matrixLocationW = gl.getUniformLocation(programW, "u_PVM_matrix_w");
@@ -133,7 +133,7 @@ window.addEventListener("load", function(evt) {
     //viewProjectionMatrix = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
   
     // se encapsula el código de dibujo en una función
-    function draw() {
+    function draw(especular, coef_env) {
       // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
       gl.enable(gl.DEPTH_TEST);
   
@@ -157,18 +157,14 @@ window.addEventListener("load", function(evt) {
       gl.uniform3f(lightUniformLocation, lightPosition.x, lightPosition.y, lightPosition.z)
 
       /* Configuración de luces (color, coeficientes) */
-      // Color de la luz ambiental
-      //gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);  //L_A
       // Coeficiente ambiental
-      gl.uniform1f(coefficientEnvUniformLocation, 0.0685);   //K_A
-      // Color del luz difusa
-      //gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1); //L_D
+      gl.uniform1f(coefficientEnvUniformLocation, coef_env);   //K_A
       // Coeficiente difuso
       gl.uniform1f(coefficientDifuseUniformLocation, 1);      //K_D
       // Color de la luz especular
       gl.uniform3f(colorSpecLightUniformLocation, 1, 1, 1);   //L_S
       // Coeficiente especular
-      gl.uniform1f(coefficientSpecUniformLocation, 0); // K_S Dibujado solo con iluminación difusa
+      gl.uniform1f(coefficientSpecUniformLocation, especular); // K_S Dibujado solo con iluminación difusa
       // Valor especular
       gl.uniform1f(alphaSpecUniformLocation, 5.0); // alpha
   
@@ -193,134 +189,73 @@ window.addEventListener("load", function(evt) {
           );
       }
     }
+
+    /*================== MODO WIREFFRAME ==================*/
+    // se encapsula el código de dibujo en una función
+    function wireframe() {
+      // se define una matriz que combina las transformaciones de la vista y de proyección
+      let viewProjectionMatrixW = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
+      // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
+      gl.enable(gl.DEPTH_TEST);
+
+      // se le indica a WebGL cual es el tamaño de la ventana donde se despliegan los gráficos
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+      // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
+      gl.clearColor(0, 0, 0, 0);
+
+      // se limpian tanto el buffer de color, como el buffer de profundidad
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      // se le indica a WebGL que programa debe utilizar
+      // recordando, un programa en este contexto es una pareja compuesta por un shader de vértices y uno de fragmentos
+
+      // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
+      // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
+      gl.useProgram(programW);
+
+      // se itera sobre cada objeto geométrico definido
+      for (let i=0; i<geometry.length; i++) {
+        // se dibuja la geometría
+        geometry[i].drawWireframe(
+          gl, // referencia al contexto de render de WebGL
+          positionAttributeLocationW, // referencia a: attribute vec4 a_position;
+          colorUniformLocationW, // referencia a: uniform vec4 u_color;
+          PVM_matrixLocationW, // referencia a: uniform mat4 u_PVM_matrix;
+          viewProjectionMatrixW // la matriz de transformación de la vista y proyección
+        );
+      }
+    }
+    /*=====================================================*/
   
     // se dibujan los objetos
-    draw()
+    draw(0,0.0685);
+
+    /*=== Eventos para dibujar las figuras en diferentes modos ===*/
+    checkboWire.addEventListener("change", function() {
+      if (checkboWire.checked) {
+        checkboEspec.disabled = true;
+        wireframe();
+      } else {
+        checkboEspec.disabled = false;
+        // Se regresa al estado seleccionado
+        if (checkboEspec.checked) {
+          draw(1, 0.0685);  // Dibujado difuso y especular
+        } else {
+          draw(0, 0.0685);  // Dibujado solo difuso
+        }
+      }
+    });
+
+    checkboEspec.addEventListener("change", function() {
+      if (checkboEspec.checked) {
+        draw(1, 0.0685);  // Dibujado difuso y especular
+      } else {
+        draw(0, 0.0685);  // Dibujado solo difuso
+      }
+    });
   
   });
-
-  /**
-   * Función para determinar si se dibujan los obejtos geométricos
-   * en modo wireframe o en modo normal usando el color asignado
-   */
-  function selectDrawMode() {
-    let checkboWire = document.getElementById("wire_ckbx");
-    let checkboEspec = document.getElementById("especular_ckbx");
-    
-    if (checkboWire.checked) {
-      wireframe();
-      return;
-    } 
-    if (checkboEspec.checked) {
-      draw(1, 0.0685);
-      return;
-    }
-    if (!checkboWire.checked && !checkboEspec.checked) {
-      draw(0, 0.0685);
-    }
-  }
-
-  // se encapsula el código de dibujo en una función
-  function wireframe() {
-    // se define una matriz que combina las transformaciones de la vista y de proyección
-    let viewProjectionMatrixW = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
-    // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
-    gl.enable(gl.DEPTH_TEST);
-
-    // se le indica a WebGL cual es el tamaño de la ventana donde se despliegan los gráficos
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-    // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
-    gl.clearColor(0, 0, 0, 0);
-
-    // se limpian tanto el buffer de color, como el buffer de profundidad
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    // se le indica a WebGL que programa debe utilizar
-    // recordando, un programa en este contexto es una pareja compuesta por un shader de vértices y uno de fragmentos
-
-    // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
-    // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
-    gl.useProgram(programW);
-
-    // se itera sobre cada objeto geométrico definido
-    for (let i=0; i<geometry.length; i++) {
-      // se dibuja la geometría
-      geometry[i].drawWireframe(
-        gl, // referencia al contexto de render de WebGL
-        positionAttributeLocationW, // referencia a: attribute vec4 a_position;
-        colorUniformLocationW, // referencia a: uniform vec4 u_color;
-        PVM_matrixLocationW, // referencia a: uniform mat4 u_PVM_matrix;
-        viewProjectionMatrixW // la matriz de transformación de la vista y proyección
-        );
-    }
-  }
-
-  /**
-   * Función de dibujado con iluminación difusa
-   * @param {Number} especular
-   * Recibe el coeficiente especular, si es cero el modelo no tiene iluminación especular
-   */
-  function draw(especular, coef_env) {
-    // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
-    gl.enable(gl.DEPTH_TEST);
-  
-    // se le indica a WebGL cual es el tamaño de la ventana donde se despliegan los gráficos
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-    // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
-    gl.clearColor(0, 0, 0, 0);
-
-    // se limpian tanto el buffer de color, como el buffer de profundidad
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    // se le indica a WebGL que programa debe utilizar
-    // recordando, un programa en este contexto es una pareja compuesta por un shader de vértices y uno de fragmentos
-
-    // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
-    // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
-    gl.useProgram(program);
-
-    // Ubicación de la luz en webgl
-    gl.uniform3f(lightUniformLocation, lightPosition.x, lightPosition.y, lightPosition.z)
-
-    /* Configuración de luces (color, coeficientes) */
-    // Color de la luz ambiental
-    //gl.uniform3f(colorEnvLightUniformLocation, 1, 1, 1);
-    // Coeficiente ambiental
-    gl.uniform1f(coefficientEnvUniformLocation, coef_env);
-    // Color del luz difusa
-    //gl.uniform3f(colorDifuseLightUniformLocation, 1, 1, 1);
-    // Coeficiente difuso
-    gl.uniform1f(coefficientDifuseUniformLocation, 1);
-    // Color de la luz especular
-    gl.uniform3f(colorSpecLightUniformLocation, 1, 1, 1);
-    // Coeficiente especular
-    gl.uniform1f(coefficientSpecUniformLocation, especular);
-    // Valor especular
-    gl.uniform1f(alphaSpecUniformLocation, 5.0);
-
-    // se itera sobre cada objeto geométrico definido
-    for (let i=0; i<geometry.length; i++) {
-      let figura = geometry[i];
-      // Color de la luz ambiental
-      gl.uniform3f(colorEnvLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);  //L_A
-      // Color del luz difusa
-      gl.uniform3f(colorDifuseLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);
-      
-      // se dibuja la geometría
-      geometry[i].draw(
-        gl, // referencia al contexto de render de WebGL
-        positionAttributeLocation, // referencia a: attribute vec4 a_position;
-        normalAttributeLocation, // Referencia a: a_normal
-        colorUniformLocation, // referencia a: uniform vec4 u_color;
-        PVM_matrixLocation, // referencia a: uniform mat4 u_PVM_matrix;
-        VM_matrixLocation, // Referencia a: u_VM_matrix
-        projectionMatrix, 
-        viewMatrix 
-        );
-    }
-  }
 
   
   
