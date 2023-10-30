@@ -12,53 +12,6 @@ window.addEventListener("load", function(evt) {
     // si el navegador no soporta WebGL la variable gl no está definida y se lanza una excepción
     if (!gl) throw "WebGL no soportado";
   
-    // se obtiene una referencia al elemento con id="2d-vertex-shader" que se encuentra en el archivo index.html
-    //let vertexShaderSource = document.getElementById("2d-vertex-shader").text;
-    // con el contenido leído, se crea un shader utilizando la función de utilería "createShader"
-    //let vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-  
-    // se obtiene una referencia al elemento con id="2d-fragment-shader" que se encuentra en el archivo index.html
-    //let fragmentShaderSource = document.getElementById("2d-fragment-shader").text;
-    // con el contenido leído, se crea un shader utilizando la función de utilería "createShader"
-    //let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-
-    //////////////////////////////////////////////
-    // Obtenemos los shaders para modo wireframe
-    let vertexShaderSourceW = document.getElementById("2d-vertex-shader-wireframe").text;
-    let vertexShaderW = createShader(gl, gl.VERTEX_SHADER, vertexShaderSourceW);
-    let fragmentShaderSourceW = document.getElementById("2d-fragment-shader-wireframe").text;
-    let fragmentShaderW = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSourceW);
-    programW = createProgram(gl, vertexShaderW, fragmentShaderW);
-    positionAttributeLocationW = gl.getAttribLocation(programW, "a_position_w");
-    colorUniformLocationW = gl.getUniformLocation(programW, "u_color_w");
-    PVM_matrixLocationW = gl.getUniformLocation(programW, "u_PVM_matrix_w");
-    /////////////////////////////////////////////
-  
-    // se crea el programa que se enviara a la tarjeta de video, el cual está compuesto por los dos shader que se crearon anteriormente
-    //program = createProgram(gl, vertexShader, fragmentShader);
-  
-    // se construye una referencia al attribute "a_position" definido en el shader
-    //positionAttributeLocation = gl.getAttribLocation(program, "a_position");
-    //normalAttributeLocation = gl.getAttribLocation(program, "a_normal");
-    //colorUniformLocation = gl.getUniformLocation(program, "u_color");
-    //lightUniformLocation = gl.getUniformLocation(program, "u_light_position");
-    // Color de la luz ambiental
-    //colorEnvLightUniformLocation = gl.getUniformLocation(program, "l_a"); //
-    // Coeficiente ambiental
-    //coefficientEnvUniformLocation = gl.getUniformLocation(program, "k_a"); //
-    // Color de la luz difusa
-    //colorDifuseLightUniformLocation = gl.getUniformLocation(program, "l_d"); //
-    // Coeficiente difuso
-    //coefficientDifuseUniformLocation = gl.getUniformLocation(program, "k_d"); //
-    // Color de la luz especular
-    //colorSpecLightUniformLocation = gl.getUniformLocation(program, "l_s"); //
-    // Coeficiente especular
-    //coefficientSpecUniformLocation = gl.getUniformLocation(program, "k_s"); //
-    // Brillo especular
-    //alphaSpecUniformLocation = gl.getUniformLocation(program, "alpha_s"); //
-    //PVM_matrixLocation = gl.getUniformLocation(program, "u_PVM_matrix");
-    //VM_matrixLocation = gl.getUniformLocation(program, "u_VM_matrix");
-  
     // se crean y posicionan los modelos geométricos, uno de cada tipo
     geometry = [
       new CG.Cilindro(
@@ -129,9 +82,6 @@ window.addEventListener("load", function(evt) {
     // Se construye la posición de la luz
     lightPosition = viewMatrix.multiplyVector(new CG.Vector4(0, 3, 0, 1));
   
-    // se define una matriz que combina las transformaciones de la vista y de proyección (desactivado)
-    //viewProjectionMatrix = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
-  
     // se encapsula el código de dibujo en una función
     function draw(especular, coef_env, material, alpha_s) {
       // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
@@ -146,57 +96,20 @@ window.addEventListener("load", function(evt) {
       // se limpian tanto el buffer de color, como el buffer de profundidad
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   
-      // se le indica a WebGL que programa debe utilizar
-      // recordando, un programa en este contexto es una pareja compuesta por un shader de vértices y uno de fragmentos
-  
-      // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
-      // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
-      //gl.useProgram(program);
-
-      // Ubicación de la luz en webgl
-      //gl.uniform3f(lightUniformLocation, lightPosition.x, lightPosition.y, lightPosition.z)
-
-      /* Configuración de luces (color, coeficientes) */
-      // Coeficiente ambiental
-      //gl.uniform1f(coefficientEnvUniformLocation, coef_env);   //K_A
-      // Coeficiente difuso
-      //gl.uniform1f(coefficientDifuseUniformLocation, 1);      //K_D
-      // Color de la luz especular
-      //gl.uniform3f(colorSpecLightUniformLocation, 1, 1, 1);   //L_S
-      // Coeficiente especular
-      //gl.uniform1f(coefficientSpecUniformLocation, especular); // K_S Dibujado solo con iluminación difusa
-      // Valor especular
-      //gl.uniform1f(alphaSpecUniformLocation, 5.0); // alpha
-  
       // se itera sobre cada objeto geométrico definido
       for (let i=0; i<geometry.length; i++) {
         let figura = geometry[i];
-        // Color de la luz ambiental
-        //gl.uniform3f(colorEnvLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);  //L_A
-        // Color del luz difusa
-        //gl.uniform3f(colorDifuseLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]); //L_D
 
-        // se dibuja la geometría
-        /*figura.draw(
-          gl, // referencia al contexto de render de WebGL
-          positionAttributeLocation, // referencia a: attribute vec4 a_position;
-          normalAttributeLocation, // Referencia a: a_normal
-          colorUniformLocation, // referencia a: uniform vec4 u_color;
-          PVM_matrixLocation, // referencia a: uniform mat4 u_PVM_matrix;
-          VM_matrixLocation, // Referencia a: u_VM_matrix
-          projectionMatrix, 
-          viewMatrix 
-          );*/
         figura.draw(
           gl, // referencia al contexto de render de WebGL
-          material, // referencia a: attribute vec4 a_position;
-          projectionMatrix, // Referencia a: a_normal
-          viewMatrix, // referencia a: uniform vec4 u_color;
-          lightPosition, // referencia a: uniform mat4 u_PVM_matrix;
-          coef_env, // Referencia a: u_VM_matrix
-          1, 
+          material,
+          projectionMatrix,
+          viewMatrix,
+          lightPosition,
+          coef_env,
+          1, // Coeficiente difuso
           especular,
-          alpha_s // Valor alpha de brillo especular
+          alpha_s
           );
       }
     }
@@ -218,21 +131,11 @@ window.addEventListener("load", function(evt) {
       // se limpian tanto el buffer de color, como el buffer de profundidad
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      // se le indica a WebGL que programa debe utilizar
-      // recordando, un programa en este contexto es una pareja compuesta por un shader de vértices y uno de fragmentos
-
-      // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
-      // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
-      //gl.useProgram(programW);
-
       // se itera sobre cada objeto geométrico definido
       for (let i=0; i<geometry.length; i++) {
         // se dibuja la geometría
         geometry[i].drawWireframe(
           gl, // referencia al contexto de render de WebGL
-          //positionAttributeLocationW, // referencia a: attribute vec4 a_position;
-          //colorUniformLocationW, // referencia a: uniform vec4 u_color;
-          //PVM_matrixLocationW, // referencia a: uniform mat4 u_PVM_matrix;
           viewProjectionMatrixW // la matriz de transformación de la vista y proyección
         );
       }
