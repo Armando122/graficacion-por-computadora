@@ -1,7 +1,7 @@
 var CG = (function(CG) {
     let g_width, g_height, g_length;
   
-    class PrismaRectangular {
+    class PrismaRectangular extends CG.GenericGeometry {
       /**
        * @param {WebGLRenderingContext} gl
        * @param {Number[]} color
@@ -9,13 +9,16 @@ var CG = (function(CG) {
        * @param {Number} height
        * @param {Number} length
        * @param {Matrix4} initial_transform
+       * @param {Boolean} Smooth
        */
       constructor(gl, color, width, height, length, initial_transform) {
         g_width  = (width  || 1)/2;
         g_height = (height || 1)/2;
         g_length = (length || 1)/2;
+
+        super(gl, color, initial_transform);
         
-        this.initial_transform = initial_transform || new CG.Matrix4();
+        /*this.initial_transform = initial_transform || new CG.Matrix4();
   
         this.positionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
@@ -32,7 +35,7 @@ var CG = (function(CG) {
         let normals = this.getNormals(vertices);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
   
-        this.num_elements = vertices.length/3;
+        this.num_elements = vertices.length/3;*/
       }
   
       /**
@@ -43,7 +46,7 @@ var CG = (function(CG) {
        * @param {Matrix4} projectionViewMatrix
        * Función que dibuja el objeto geométrico usando el color asignado
        */
-      draw(gl, positionAttributeLocation, normalAttributeLocation, colorUniformLocation, PVM_matrixLocation, VM_matrixLocation, projectionMatrix, viewMatrix) {
+      /*draw(gl, positionAttributeLocation, normalAttributeLocation, colorUniformLocation, PVM_matrixLocation, VM_matrixLocation, projectionMatrix, viewMatrix) {
         // buffer de posiciones
         gl.enableVertexAttribArray(positionAttributeLocation);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
@@ -67,7 +70,7 @@ var CG = (function(CG) {
   
         // dubjado
         gl.drawArrays(gl.TRIANGLES, 0, this.num_elements);
-      }
+      }*/
 
       /**
        * @param {WebGLRenderingContext} gl
@@ -77,7 +80,7 @@ var CG = (function(CG) {
        * @param {Matrix4} projectionViewMatrix
        * Función que dibuja el objeto geométrico en modo wireframe 
        */
-      drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
+      /*drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
 
         let positionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -105,7 +108,7 @@ var CG = (function(CG) {
   
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
         gl.drawElements(gl.LINE_STRIP, num_elementsL, gl.UNSIGNED_SHORT, 0);
-      }
+      }*/
 
       /**
        * Función que devuelve los vértices para el modo wireframe
@@ -151,7 +154,7 @@ var CG = (function(CG) {
       /**
        * Función que devuelve las normales del objeto
        */
-      getNormals(vertices) {
+      /*getNormals(vertices) {
         let normals = [];
         let v1 = new CG.Vector3();
         let v2 = new CG.Vector3();
@@ -173,7 +176,7 @@ var CG = (function(CG) {
         }
 
         return normals;
-      }
+      }*/
       
       /**
        * Función que devuelve el arreglo de caras de la figura.

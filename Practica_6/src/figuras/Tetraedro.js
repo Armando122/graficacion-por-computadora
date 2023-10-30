@@ -1,7 +1,7 @@
 var CG = (function(CG) {
     let g_width, g_x, g_y, g_z, g_x0, g_y0;
 
-    class Tetraedro{
+    class Tetraedro extends CG.GenericGeometry {
         /**
          * @param {WebGLRenderingContext} gl
          * @param {Number[]} color
@@ -19,7 +19,9 @@ var CG = (function(CG) {
             g_x0 = g_x * Math.cos(anguloT) + g_y * Math.sin(anguloT);
             g_y0 = -g_x * Math.sin(anguloT) + g_y * Math.cos(anguloT);
 
-            this.initial_transform = initial_transform || new CG.Matrix4();
+            super(gl, color, initial_transform);
+
+            /*this.initial_transform = initial_transform || new CG.Matrix4();
 
             this.positionbuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, this.positionbuffer);
@@ -36,7 +38,7 @@ var CG = (function(CG) {
             let normals = this.getNormals(vertices);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
 
-            this.num_elements = vertices.length/3;
+            this.num_elements = vertices.length/3;*/
         }
         
         /**
@@ -47,7 +49,7 @@ var CG = (function(CG) {
          * @param {Matrix4} projectionViewMatrix
          * Función que dibuja el objeto geométrico usando el color asignado
          */
-        draw(gl, positionAttributeLocation, normalAttributeLocation, colorUniformLocation, PVM_matrixLocation, VM_matrixLocation, projectionMatrix, viewMatrix) {
+        /*draw(gl, positionAttributeLocation, normalAttributeLocation, colorUniformLocation, PVM_matrixLocation, VM_matrixLocation, projectionMatrix, viewMatrix) {
             // buffer de posiciones
             gl.enableVertexAttribArray(positionAttributeLocation);
             gl.bindBuffer(gl.ARRAY_BUFFER, this.positionbuffer);
@@ -71,7 +73,7 @@ var CG = (function(CG) {
 
             // Dibujado
             gl.drawArrays(gl.TRIANGLES, 0, this.num_elements);
-        }
+        }*/
         
         /**
          * @param {WebGLRenderingContext} gl
@@ -81,7 +83,7 @@ var CG = (function(CG) {
          * @param {Matrix4} projectionViewMatrix
          * Función que dibuja el objeto geométrico en modo wireframe
          */
-        drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
+        /*drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
             let positionBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
       
@@ -108,7 +110,7 @@ var CG = (function(CG) {
 
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
             gl.drawElements(gl.LINE_STRIP, num_elementsL, gl.UNSIGNED_SHORT, 0);
-        }
+        }*/
 
         /**
          * Función que devuelve un arreglo con los vértices del tetraedro.
@@ -137,7 +139,7 @@ var CG = (function(CG) {
         /**
          * Función que devuelve las normales para el tetraedro
          */
-        getNormals(vertices) {
+        /*getNormals(vertices) {
             let normals = [];
             let v1 = new CG.Vector3();
             let v2 = new CG.Vector3();
@@ -159,7 +161,7 @@ var CG = (function(CG) {
             }
             
             return normals;
-        }
+        }*/
 
         /**
          * Función que devuelve las caras de la figura

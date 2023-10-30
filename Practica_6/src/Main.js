@@ -13,14 +13,14 @@ window.addEventListener("load", function(evt) {
     if (!gl) throw "WebGL no soportado";
   
     // se obtiene una referencia al elemento con id="2d-vertex-shader" que se encuentra en el archivo index.html
-    let vertexShaderSource = document.getElementById("2d-vertex-shader").text;
+    //let vertexShaderSource = document.getElementById("2d-vertex-shader").text;
     // con el contenido leído, se crea un shader utilizando la función de utilería "createShader"
-    let vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+    //let vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
   
     // se obtiene una referencia al elemento con id="2d-fragment-shader" que se encuentra en el archivo index.html
-    let fragmentShaderSource = document.getElementById("2d-fragment-shader").text;
+    //let fragmentShaderSource = document.getElementById("2d-fragment-shader").text;
     // con el contenido leído, se crea un shader utilizando la función de utilería "createShader"
-    let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+    //let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
 
     //////////////////////////////////////////////
     // Obtenemos los shaders para modo wireframe
@@ -35,29 +35,29 @@ window.addEventListener("load", function(evt) {
     /////////////////////////////////////////////
   
     // se crea el programa que se enviara a la tarjeta de video, el cual está compuesto por los dos shader que se crearon anteriormente
-    program = createProgram(gl, vertexShader, fragmentShader);
+    //program = createProgram(gl, vertexShader, fragmentShader);
   
     // se construye una referencia al attribute "a_position" definido en el shader
-    positionAttributeLocation = gl.getAttribLocation(program, "a_position");
-    normalAttributeLocation = gl.getAttribLocation(program, "a_normal");
-    colorUniformLocation = gl.getUniformLocation(program, "u_color");
-    lightUniformLocation = gl.getUniformLocation(program, "u_light_position");
+    //positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+    //normalAttributeLocation = gl.getAttribLocation(program, "a_normal");
+    //colorUniformLocation = gl.getUniformLocation(program, "u_color");
+    //lightUniformLocation = gl.getUniformLocation(program, "u_light_position");
     // Color de la luz ambiental
-    colorEnvLightUniformLocation = gl.getUniformLocation(program, "l_a"); //
+    //colorEnvLightUniformLocation = gl.getUniformLocation(program, "l_a"); //
     // Coeficiente ambiental
-    coefficientEnvUniformLocation = gl.getUniformLocation(program, "k_a"); //
+    //coefficientEnvUniformLocation = gl.getUniformLocation(program, "k_a"); //
     // Color de la luz difusa
-    colorDifuseLightUniformLocation = gl.getUniformLocation(program, "l_d"); //
+    //colorDifuseLightUniformLocation = gl.getUniformLocation(program, "l_d"); //
     // Coeficiente difuso
-    coefficientDifuseUniformLocation = gl.getUniformLocation(program, "k_d"); //
+    //coefficientDifuseUniformLocation = gl.getUniformLocation(program, "k_d"); //
     // Color de la luz especular
-    colorSpecLightUniformLocation = gl.getUniformLocation(program, "l_s"); //
+    //colorSpecLightUniformLocation = gl.getUniformLocation(program, "l_s"); //
     // Coeficiente especular
-    coefficientSpecUniformLocation = gl.getUniformLocation(program, "k_s"); //
+    //coefficientSpecUniformLocation = gl.getUniformLocation(program, "k_s"); //
     // Brillo especular
-    alphaSpecUniformLocation = gl.getUniformLocation(program, "alpha_s"); //
-    PVM_matrixLocation = gl.getUniformLocation(program, "u_PVM_matrix");
-    VM_matrixLocation = gl.getUniformLocation(program, "u_VM_matrix");
+    //alphaSpecUniformLocation = gl.getUniformLocation(program, "alpha_s"); //
+    //PVM_matrixLocation = gl.getUniformLocation(program, "u_PVM_matrix");
+    //VM_matrixLocation = gl.getUniformLocation(program, "u_VM_matrix");
   
     // se crean y posicionan los modelos geométricos, uno de cada tipo
     geometry = [
@@ -100,7 +100,7 @@ window.addEventListener("load", function(evt) {
         gl, 
         [1, 0.2, 0.3, 1], 
         2, 3, 4, 
-        CG.Matrix4.translate(new CG.Vector3(-5, 0, 5))
+        CG.Matrix4.translate(new CG.Vector3(-5, 0, 5)),
       ),
       new CG.Tetraedro(
         gl, 
@@ -133,7 +133,7 @@ window.addEventListener("load", function(evt) {
     //viewProjectionMatrix = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
   
     // se encapsula el código de dibujo en una función
-    function draw(especular, coef_env) {
+    function draw(especular, coef_env, material, alpha_s) {
       // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
       gl.enable(gl.DEPTH_TEST);
   
@@ -151,33 +151,33 @@ window.addEventListener("load", function(evt) {
   
       // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
       // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
-      gl.useProgram(program);
+      //gl.useProgram(program);
 
       // Ubicación de la luz en webgl
-      gl.uniform3f(lightUniformLocation, lightPosition.x, lightPosition.y, lightPosition.z)
+      //gl.uniform3f(lightUniformLocation, lightPosition.x, lightPosition.y, lightPosition.z)
 
       /* Configuración de luces (color, coeficientes) */
       // Coeficiente ambiental
-      gl.uniform1f(coefficientEnvUniformLocation, coef_env);   //K_A
+      //gl.uniform1f(coefficientEnvUniformLocation, coef_env);   //K_A
       // Coeficiente difuso
-      gl.uniform1f(coefficientDifuseUniformLocation, 1);      //K_D
+      //gl.uniform1f(coefficientDifuseUniformLocation, 1);      //K_D
       // Color de la luz especular
-      gl.uniform3f(colorSpecLightUniformLocation, 1, 1, 1);   //L_S
+      //gl.uniform3f(colorSpecLightUniformLocation, 1, 1, 1);   //L_S
       // Coeficiente especular
-      gl.uniform1f(coefficientSpecUniformLocation, especular); // K_S Dibujado solo con iluminación difusa
+      //gl.uniform1f(coefficientSpecUniformLocation, especular); // K_S Dibujado solo con iluminación difusa
       // Valor especular
-      gl.uniform1f(alphaSpecUniformLocation, 5.0); // alpha
+      //gl.uniform1f(alphaSpecUniformLocation, 5.0); // alpha
   
       // se itera sobre cada objeto geométrico definido
       for (let i=0; i<geometry.length; i++) {
         let figura = geometry[i];
         // Color de la luz ambiental
-        gl.uniform3f(colorEnvLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);  //L_A
+        //gl.uniform3f(colorEnvLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]);  //L_A
         // Color del luz difusa
-        gl.uniform3f(colorDifuseLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]); //L_D
+        //gl.uniform3f(colorDifuseLightUniformLocation, figura.color[0], figura.color[1], figura.color[2]); //L_D
 
         // se dibuja la geometría
-        geometry[i].draw(
+        /*figura.draw(
           gl, // referencia al contexto de render de WebGL
           positionAttributeLocation, // referencia a: attribute vec4 a_position;
           normalAttributeLocation, // Referencia a: a_normal
@@ -186,6 +186,17 @@ window.addEventListener("load", function(evt) {
           VM_matrixLocation, // Referencia a: u_VM_matrix
           projectionMatrix, 
           viewMatrix 
+          );*/
+        figura.draw(
+          gl, // referencia al contexto de render de WebGL
+          material, // referencia a: attribute vec4 a_position;
+          projectionMatrix, // Referencia a: a_normal
+          viewMatrix, // referencia a: uniform vec4 u_color;
+          lightPosition, // referencia a: uniform mat4 u_PVM_matrix;
+          coef_env, // Referencia a: u_VM_matrix
+          1, 
+          especular,
+          alpha_s // Valor alpha de brillo especular
           );
       }
     }
@@ -212,16 +223,16 @@ window.addEventListener("load", function(evt) {
 
       // como todos los objetos que vamos a dibujar usan el mismo par de shader podemos usar esta función fuera del siguiente for
       // pero si cada objeto geométrico tiene su propio estilo podemos cambiar el programa dentro del for dependiendo del modelo
-      gl.useProgram(programW);
+      //gl.useProgram(programW);
 
       // se itera sobre cada objeto geométrico definido
       for (let i=0; i<geometry.length; i++) {
         // se dibuja la geometría
         geometry[i].drawWireframe(
           gl, // referencia al contexto de render de WebGL
-          positionAttributeLocationW, // referencia a: attribute vec4 a_position;
-          colorUniformLocationW, // referencia a: uniform vec4 u_color;
-          PVM_matrixLocationW, // referencia a: uniform mat4 u_PVM_matrix;
+          //positionAttributeLocationW, // referencia a: attribute vec4 a_position;
+          //colorUniformLocationW, // referencia a: uniform vec4 u_color;
+          //PVM_matrixLocationW, // referencia a: uniform mat4 u_PVM_matrix;
           viewProjectionMatrixW // la matriz de transformación de la vista y proyección
         );
       }
@@ -229,7 +240,7 @@ window.addEventListener("load", function(evt) {
     /*=====================================================*/
   
     // se dibujan los objetos
-    draw(0,0.0685);
+    draw(0,0.0685, new CG.DiffuseMaterial(gl), 0);
 
     /*=== Eventos para dibujar las figuras en diferentes modos ===*/
     checkboWire.addEventListener("change", function() {
@@ -240,18 +251,18 @@ window.addEventListener("load", function(evt) {
         checkboEspec.disabled = false;
         // Se regresa al estado seleccionado
         if (checkboEspec.checked) {
-          draw(1, 0.0685);  // Dibujado difuso y especular
+          draw(1, 0.0685, new CG.PhongMaterial(gl), 5.0);  // Dibujado difuso y especular
         } else {
-          draw(0, 0.0685);  // Dibujado solo difuso
+          draw(0, 0.0685, new CG.DiffuseMaterial(gl));  // Dibujado solo difuso
         }
       }
     });
 
     checkboEspec.addEventListener("change", function() {
       if (checkboEspec.checked) {
-        draw(1, 0.0685);  // Dibujado difuso y especular
+        draw(1, 0.0685, new CG.PhongMaterial(gl), 5.0);  // Dibujado difuso y especular
       } else {
-        draw(0, 0.0685);  // Dibujado solo difuso
+        draw(0, 0.0685, new CG.DiffuseMaterial(gl));  // Dibujado solo difuso
       }
     });
   

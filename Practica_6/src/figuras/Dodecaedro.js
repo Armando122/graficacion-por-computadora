@@ -2,7 +2,7 @@ var CG = (function(CG) {
     let g_width, g_width_d, g_width_m;
     var goldenCons = 1.6180339887;
 
-    class Dodecaedro {
+    class Dodecaedro extends CG.GenericGeometry {
         /**
          * Constructor de dodecaedro
          * @param {WebGLRenderingContext} gl
@@ -15,7 +15,9 @@ var CG = (function(CG) {
             g_width_d = g_width/goldenCons;
             g_width_m = g_width*goldenCons;
 
-            this.initial_transform = initial_transform || new CG.Matrix4();
+            super(gl, color, initial_transform);
+
+            /*this.initial_transform = initial_transform || new CG.Matrix4();
 
             this.positionBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
@@ -32,7 +34,7 @@ var CG = (function(CG) {
             let normals = this.getNormals(vertices);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
 
-            this.num_elements = vertices.length/3;
+            this.num_elements = vertices.length/3;*/
         }
 
         /**
@@ -43,7 +45,7 @@ var CG = (function(CG) {
          * @param {WebGLUniformLocation} PVM_matrixLocation
          * @param {Matrix4} projectionViewMatrix
          */
-        draw(gl, positionAttributeLocation, normalAttributeLocation, colorUniformLocation, PVM_matrixLocation, VM_MatrixLocation, projectionMatrix, viewMatrix) {
+        /*draw(gl, positionAttributeLocation, normalAttributeLocation, colorUniformLocation, PVM_matrixLocation, VM_MatrixLocation, projectionMatrix, viewMatrix) {
             // Buffer de posiciones
             gl.enableVertexAttribArray(positionAttributeLocation);
             gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
@@ -67,7 +69,7 @@ var CG = (function(CG) {
         
             // Dibujo 
             gl.drawArrays(gl.TRIANGLES, 0, this.num_elements);
-        }
+        }*/
 
         /**
          * Función que dibuja el dodecaedro en modo wireframe
@@ -77,7 +79,7 @@ var CG = (function(CG) {
          * @param {WebGLUniformLocation} PVM_matrixLocation
          * @param {Matrix4} projectionViewMatrix
          */
-        drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
+        /*drawWireframe(gl, positionAttributeLocation, colorUniformLocation, PVM_matrixLocation, projectionViewMatrix) {
             let positionBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
@@ -104,7 +106,7 @@ var CG = (function(CG) {
   
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
             gl.drawElements(gl.LINE_STRIP, num_elementsL, gl.UNSIGNED_SHORT, 0);
-        }
+        }*/
 
         /**
          * Función que devuelve los vértices del dodecaedro, para usar en modo wireframe
@@ -181,7 +183,7 @@ var CG = (function(CG) {
         /**
          * Función que devuelve las normales a partir del arreglo de vértices recibido
          */
-        getNormals(vertices) {
+        /*getNormals(vertices) {
             let normals = [];
             let v1 = new CG.Vector3();
             let v2 = new CG.Vector3();
@@ -203,7 +205,7 @@ var CG = (function(CG) {
             }
             
             return normals;
-        }
+        }*/
 
         /**
          * Función que devuelve las caras del dodecaedro
