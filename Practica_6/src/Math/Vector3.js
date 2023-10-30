@@ -6,16 +6,16 @@ var CG = (function(CG) {
          * @param z
          * En caso de no recibir valores devuelve (0,0,0)
          */
-        constructor(x,y,z) {
-            if (x == null && y == null && z == null) {
+        constructor(x=0,y=0,z=0) {
+            /*if (x == NaN && y == NaN && z == NaN) {
                 this.x = 0;
                 this.y = 0;
-                this.z = 0;
-            } else {
+                this.z = 0;*/
+            //} else {
                 this.x = x;
                 this.y = y;
                 this.z = z;
-            }
+            //}
         }
 
         /**
@@ -145,7 +145,7 @@ var CG = (function(CG) {
          * @param {Number} z
          * Asigna los nuevos componentes al vector
          */
-        set(nx, ny, nz) {
+        set(nx=0, ny=0, nz=0) {
             this.x = nx;
             this.y = ny;
             this.z = nz;
