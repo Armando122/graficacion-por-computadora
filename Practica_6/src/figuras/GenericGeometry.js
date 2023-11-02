@@ -13,25 +13,18 @@ var CG = (function(CG) {
          * @param {Matrix4} initial_transform
          */
         constructor(gl, color = [0,0,0,1], initial_transform = new CG.Matrix4()) {
-            //this.smooth = smooth;
+            this.smooth = false;
             this.color = color;
             this.initial_transform = initial_transform;
             this.flatNumElems = 0;
             this.smoothNumElems = 0;
 
             // Si está activado el smooth la figura se dibujará en modo smooth
-            /*if (this.smooth) {
+            /*if (this.smooth) {*/
               let smooth_vertices = this.getVerticesW();
 
               let faces = this.getFaces();
               let flat_vertices = this.getVertices();
-              for (let i = 0; i < faces.length; i++) {
-                flat_vertices.push(
-                  smooth_vertices[faces[i]*3],
-                  smooth_vertices[faces[i]*3 + 1],
-                  smooth_vertices[faces[i]*3 + 2]
-                );
-              }
 
               // triángulos ordenados en el buffer
               this.flatPositionBuffer = gl.createBuffer();
@@ -65,7 +58,7 @@ var CG = (function(CG) {
         
               // número de elementos en el buffer de datos suavizado
               this.smoothNumElements = faces.length;
-            } else {*/
+            /*} else {
               // En otro caso el objeto no está definido con caras suaves
               let vertices = this.getVertices();
               let normals = this.getFlatNormals(vertices);
@@ -82,7 +75,7 @@ var CG = (function(CG) {
               
               // número de elementos que define el prisma
               this.flatNumElements = vertices.length/3;
-            /*}*/
+            }*/
         }
         
         /**
@@ -130,7 +123,7 @@ var CG = (function(CG) {
           this.material.setUniform(gl, "u_PVM_matrix", projectionViewModelMatrix.toArray());
 
           // si es suavizado utilizamos los datos indexados
-          /*if (this.smooth && (this.smoothNumElements>0)) {
+          if (this.smooth && (this.smoothNumElements>0)) {
             // el buffer de posiciones
             this.material.setAttribute(gl, "a_position", this.smoothPositionBuffer, 3, gl.FLOAT, false, 0, 0);
             
@@ -142,7 +135,7 @@ var CG = (function(CG) {
             gl.drawElements(gl.TRIANGLES, this.smoothNumElements, gl.UNSIGNED_SHORT, 0);
           }
           // si es plano utilizamos los datos consecutivos
-          else {*/
+          else {
             // el buffer de posiciones
             this.material.setAttribute(gl, "a_position", this.flatPositionBuffer, 3, gl.FLOAT, false, 0, 0);
           
@@ -151,7 +144,7 @@ var CG = (function(CG) {
           
             // dibujado
             gl.drawArrays(gl.TRIANGLES, 0, this.flatNumElements);
-          /*}*/
+          }
         }
 
         /**
@@ -233,23 +226,23 @@ var CG = (function(CG) {
           let i1, i2, i3;
           let tmp = new CG.Vector3();
           let n;
-
-          for (let i = 0; i < faces.length; i+=3) {
+        
+          for (let i=0; i<faces.length; i+=3) {
             i1 = faces[i  ]*3;
             i2 = faces[i+1]*3;
             i3 = faces[i+2]*3;
-
-            v1.set( vertices[i1], vertices[i1+1], vertices[i1+2] );
-            v2.set( vertices[i2], vertices[i2+1], vertices[i2+2] );
-            v3.set( vertices[i3], vertices[i3+1], vertices[i3+2] );
+        
+            v1.set( vertices[i1], vertices[i1 + 1], vertices[i1 + 2] );
+            v2.set( vertices[i2], vertices[i2 + 1], vertices[i2 + 2] );
+            v3.set( vertices[i3], vertices[i3 + 1], vertices[i3 + 2] );
             n = CG.Vector3.cross(CG.Vector3.substract(v1, v2), CG.Vector3.substract(v2, v3)).normalize();
-
-            tmp.set(normals[i1], normals[i1+1], normals[i1+2]);
+            
+            tmp.set( normals[i1], normals[i1+1], normals[i1+2] );
             tmp = CG.Vector3.add(tmp, n);
             normals[i1  ] = tmp.x;
             normals[i1+1] = tmp.y;
             normals[i1+2] = tmp.z;
-
+        
             tmp.set( normals[i2], normals[i2+1], normals[i2+2] );
             tmp = CG.Vector3.add(tmp, n);
             normals[i2  ] = tmp.x;
@@ -262,15 +255,15 @@ var CG = (function(CG) {
             normals[i3+1] = tmp.y;
             normals[i3+2] = tmp.z;
           }
-
-          for (let i = 0; i < normals.length; i+=3) {
+        
+          for (let i=0; i<normals.length; i+=3) {
             tmp.set(normals[i], normals[i+1], normals[i+2]);
             tmp = tmp.normalize();
             normals[i  ] = tmp.x;
             normals[i+1] = tmp.y;
             normals[i+2] = tmp.z;
           }
-
+        
           return normals;
         }
     }

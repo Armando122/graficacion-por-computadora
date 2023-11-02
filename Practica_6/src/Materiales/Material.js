@@ -9,10 +9,10 @@ var CG = (function(CG) {
             if (MATERIAL_CACHE[this.constructor.name]) {
                 this.program = MATERIAL_CACHE[this.constructor.name];
             } else {
-                this.program = createProgram(
+                this.program = CG.createProgram(
                     gl,
-                    createShader(gl, gl.VERTEX_SHADER, vertex_shader_source_code),
-                    createShader(gl, gl.FRAGMENT_SHADER, fragment_shader_source_code)
+                    CG.createShader(gl, gl.VERTEX_SHADER, vertex_shader_source_code),
+                    CG.createShader(gl, gl.FRAGMENT_SHADER, fragment_shader_source_code)
                 );
                 MATERIAL_CACHE[this.constructor.name] = this.program;
             }
