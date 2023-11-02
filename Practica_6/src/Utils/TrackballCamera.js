@@ -106,6 +106,73 @@ var CG = (function(CG) {
                 let dib = this.dibujado;
                 dib(this.val_esp, this.coef_amb, this.mat, this.valor_alpha);
             }
+
+            /*window.addEventListener("keydown", (evt) => {
+                if (evt.key == "ArrowUp") {
+                    this.pos = new CG.Vector3(this.pos.x, this.pos.y+0.5, this.pos.z);
+                    this.coi = new CG.Vector3(this.coi.x, this.coi.y+0.5, this.coi.z);
+
+                    this.radius = CG.Vector3.distance(this.pos, this.coi);
+                    let direction = CG.Vector3.substract(this.pos, this.coi);
+                    this.theta = Math.atan2(direction.z, direction.x);
+                    this.phi = Math.atan2(direction.y, direction.z);
+                    window.addEventListener("keydown", keymove);
+                }
+                if (evt.key == "ArrowDown") {
+                    this.pos = new CG.Vector3(this.pos.x, this.pos.y-0.5, this.pos.z);
+                    this.coi = new CG.Vector3(this.coi.x, this.coi.y-0.5, this.coi.z);
+
+                    // Parámetros para construir esfera de la vista construyendo una esfera de radio
+                    // igual a la distancia entre la camara y el punto de interés
+                    this.radius = CG.Vector3.distance(this.pos, this.coi);
+
+                    let direction = CG.Vector3.substract(this.pos, this.coi);
+                    // ancho
+                    this.theta = Math.atan2(direction.z, direction.x);
+                    // altura
+                    this.phi = Math.atan2(direction.y, direction.z);
+                    window.addEventListener("keydown", keymove);  
+                }
+                if (evt.key == "ArrowLeft") {
+                    this.pos = new CG.Vector3(this.pos.x-0.5, this.pos.y, this.pos.z);
+                    this.coi = new CG.Vector3(this.coi.x-0.5, this.coi.y, this.coi.z);
+
+                    // Parámetros para construir esfera de la vista construyendo una esfera de radio
+                    // igual a la distancia entre la camara y el punto de interés
+                    this.radius = CG.Vector3.distance(this.pos, this.coi);
+
+                    let direction = CG.Vector3.substract(this.pos, this.coi);
+                    // ancho
+                    this.theta = Math.atan2(direction.z, direction.x);
+                    // altura
+                    this.phi = Math.atan2(direction.y, direction.z);
+                    window.addEventListener("keydown", keymove);   
+                }
+                if (evt.key == "ArrowRight") {
+                    this.pos = new CG.Vector3(this.pos.x+0.5, this.pos.y, this.pos.z);
+                    this.coi = new CG.Vector3(this.coi.x+0.5, this.coi.y, this.coi.z);
+
+                    // Parámetros para construir esfera de la vista construyendo una esfera de radio
+                    // igual a la distancia entre la camara y el punto de interés
+                    this.radius = CG.Vector3.distance(this.pos, this.coi);
+
+                    let direction = CG.Vector3.substract(this.pos, this.coi);
+                    // ancho
+                    this.theta = Math.atan2(direction.z, direction.x);
+                    // altura
+                    this.phi = Math.atan2(direction.y, direction.z);
+                    window.addEventListener("keydown", keymove); 
+                }
+              });
+
+              window.addEventListener("keyup", (evt) => {
+                window.removeEventListener("keydown", keymove);
+              });
+
+              let keymove = (evt) => {
+                let dib = this.dibujado;
+                dib(this.val_esp, this.coef_amb, this.mat, this.valor_alpha);
+              }*/
         }
     }
 

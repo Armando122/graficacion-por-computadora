@@ -78,17 +78,11 @@ window.addEventListener("load", function(evt) {
     let zNear = 1;
     let zFar = 2000;
     let projectionMatrix = CG.Matrix4.perspective(75*Math.PI/180, aspect, zNear, zFar);
-    // se define la posición de la cámara (o el observador o el ojo)
-    //let camera = new CG.Vector3(0, 11, 7);
-    // se define la posición del centro de interés, hacia donde observa la cámara
-    //let coi = new CG.Vector3(0, 0, 0);
-    // se crea una matriz de cámara (o vista)
-    //viewMatrix = CG.Matrix4.lookAt(camera, coi, new CG.Vector3(0, 1, 0));
     // Se construye la camára
     let camera = new CG.TrackballCamera(
-      new CG.Vector3(0, 11, 7),
-      new CG.Vector3(0, 0, 0),
-      new CG.Vector3(0, 1, 0)
+      new CG.Vector3(0, 11, 7), //pos
+      new CG.Vector3(0, 0, 0),  //coi
+      new CG.Vector3(0, 1, 0)   //up
     );
 
     let viewMatrix;
@@ -138,14 +132,9 @@ window.addEventListener("load", function(evt) {
 
       // se define una matriz que combina las transformaciones de la vista y de proyección
       let viewProjectionMatrixW = CG.Matrix4.multiply(projectionMatrix, camera.getMatrix());
-      // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
-      //gl.enable(gl.DEPTH_TEST);
 
       // se le indica a WebGL cual es el tamaño de la ventana donde se despliegan los gráficos
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-      // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
-      //gl.clearColor(0, 0, 0, 0);
 
       // se limpian tanto el buffer de color, como el buffer de profundidad
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -165,6 +154,7 @@ window.addEventListener("load", function(evt) {
     draw(0,0.0685, new CG.DiffuseMaterial(gl), 0);
     
     camera.registerMouseEvents(canvas/*, draw, val_esp, coef_amb, mat, valor_alpha*/);
+    //camera.registerKeyboardEvents(canvas);
     
     /*=== Eventos para dibujar las figuras en diferentes modos ===*/
     checkboWire.addEventListener("change", function() {
