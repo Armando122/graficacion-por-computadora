@@ -68,33 +68,49 @@ window.addEventListener("load", function(evt) {
         CG.Matrix4.translate(new CG.Vector3(5, 0, 5))
       ),
     ];
+    // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
+    gl.clearColor(0, 0, 0, 0);
+    // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
+    gl.enable(gl.DEPTH_TEST);
   
+    /* ============= Camara ============= */
+    let aspect = canvas.width/canvas.height;
+    let zNear = 1;
+    let zFar = 2000;
+    let projectionMatrix = CG.Matrix4.perspective(75*Math.PI/180, aspect, zNear, zFar);
     // se define la posición de la cámara (o el observador o el ojo)
-    let camera = new CG.Vector3(0, 11, 7);
+    //let camera = new CG.Vector3(0, 11, 7);
     // se define la posición del centro de interés, hacia donde observa la cámara
-    let coi = new CG.Vector3(0, 0, 0);
+    //let coi = new CG.Vector3(0, 0, 0);
     // se crea una matriz de cámara (o vista)
-    viewMatrix = CG.Matrix4.lookAt(camera, coi, new CG.Vector3(0, 1, 0));
-  
-    // se construye la matriz de proyección en perspectiva
-    projectionMatrix = CG.Matrix4.perspective(75*Math.PI/180, canvas.width/canvas.height, 1, 2000);;
+    //viewMatrix = CG.Matrix4.lookAt(camera, coi, new CG.Vector3(0, 1, 0));
+    // Se construye la camára
+    let camera = new CG.TrackballCamera(
+      new CG.Vector3(0, 11, 7),
+      new CG.Vector3(0, 0, 0),
+      new CG.Vector3(0, 1, 0)
+    );
 
+    let viewMatrix;
     // Se construye la posición de la luz
-    lightPosition = viewMatrix.multiplyVector(new CG.Vector4(0, 3, 0, 1));
+    let lightPosition = new CG.Vector4(0, 3, 0, 1);
+    let lightPosView;
+
+    
+    /* ============= Camara ============= */
   
     // se encapsula el código de dibujo en una función
     function draw(especular, coef_env, material, alpha_s) {
-      // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
-      gl.enable(gl.DEPTH_TEST);
+      camera.setDrawParams(draw, especular, coef_env, material, alpha_s);
   
       // se le indica a WebGL cual es el tamaño de la ventana donde se despliegan los gráficos
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   
-      // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
-      gl.clearColor(0, 0, 0, 0);
-  
       // se limpian tanto el buffer de color, como el buffer de profundidad
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      viewMatrix = camera.getMatrix();
+      lightPosView = viewMatrix.multiplyVector(lightPosition);
   
       // se itera sobre cada objeto geométrico definido
       for (let i=0; i<geometry.length; i++) {
@@ -105,7 +121,7 @@ window.addEventListener("load", function(evt) {
           material,
           projectionMatrix,
           viewMatrix,
-          lightPosition,
+          lightPosView,
           coef_env,
           1, // Coeficiente difuso
           especular,
@@ -117,16 +133,19 @@ window.addEventListener("load", function(evt) {
     /*================== MODO WIREFFRAME ==================*/
     // se encapsula el código de dibujo en una función
     function wireframe() {
+
+      camera.setDrawParams(wireframe);
+
       // se define una matriz que combina las transformaciones de la vista y de proyección
-      let viewProjectionMatrixW = CG.Matrix4.multiply(projectionMatrix, viewMatrix);
+      let viewProjectionMatrixW = CG.Matrix4.multiply(projectionMatrix, camera.getMatrix());
       // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
-      gl.enable(gl.DEPTH_TEST);
+      //gl.enable(gl.DEPTH_TEST);
 
       // se le indica a WebGL cual es el tamaño de la ventana donde se despliegan los gráficos
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
       // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
-      gl.clearColor(0, 0, 0, 0);
+      //gl.clearColor(0, 0, 0, 0);
 
       // se limpian tanto el buffer de color, como el buffer de profundidad
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -144,7 +163,9 @@ window.addEventListener("load", function(evt) {
   
     // se dibujan los objetos
     draw(0,0.0685, new CG.DiffuseMaterial(gl), 0);
-
+    
+    camera.registerMouseEvents(canvas/*, draw, val_esp, coef_amb, mat, valor_alpha*/);
+    
     /*=== Eventos para dibujar las figuras en diferentes modos ===*/
     checkboWire.addEventListener("change", function() {
       if (checkboWire.checked) {
@@ -160,7 +181,7 @@ window.addEventListener("load", function(evt) {
         }
       }
     });
-
+    
     checkboEspec.addEventListener("change", function() {
       if (checkboEspec.checked) {
         draw(1, 0.0685, new CG.PhongMaterial(gl), 5.0);  // Dibujado difuso y especular
@@ -168,46 +189,5 @@ window.addEventListener("load", function(evt) {
         draw(0, 0.0685, new CG.DiffuseMaterial(gl));  // Dibujado solo difuso
       }
     });
-  
+    
   });
-
-  
-  
-  //////////////////////////////////////////////////////////
-  // Funciones de utilería para la construcción de shaders
-  //////////////////////////////////////////////////////////
-  /**
-   * Función que crear un shader, dado un contexto de render, un tipo y el código fuente
-   */
-  function createShader(gl, type, source) {
-    let shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-  
-    let success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-  
-    if (success) {
-      return shader;
-    }
-   
-    console.log(gl.getShaderInfoLog(shader));
-    gl.deleteShader(shader);
-  }
-  
-  /**
-   * Función que toma un shader de vértices con uno de fragmentos y construye un programa
-   */
-  function createProgram(gl, vertexShader, fragmentShader) {
-    let program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-  
-    let success = gl.getProgramParameter(program, gl.LINK_STATUS);
-  
-    if (success) {
-      return program;
-    }
-   
-    console.log(gl.getProgramInfoLog(program));
-  }
