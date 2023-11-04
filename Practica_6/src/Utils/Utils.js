@@ -4,6 +4,26 @@ var CG = (function(CG) {
     /*=======================================================*/
 
     /**
+     * Lee una images a partir de su dirección y devuelve una Promesa
+     * @param {*} url 
+     * @returns Promise que tiene asociada la imagen
+     */
+    function loadImage(url) {
+      return new Promise((resolve, reject) => {
+        // se crea una imagen
+        const img = new Image();
+        // se asocia al evento de carga de la imagen la resolución de la promesa
+        // resolve(img) es una función de la Promesa que eventualmente devuelve la imagen
+        img.addEventListener("load", () => resolve(img));
+        // se asocia al evento de error de la imagen el rechazo de la promesa
+        // reject(err) es una función de la Promesa que eventualmente devuelve un error
+        img.addEventListener("error", (err) => reject(err));
+        // se inicia la carga de la imagen
+        img.src = url;
+      });
+    }
+
+    /**
      * Función que obtiene la posición del mouse
      */
     function getMousePositionInElement(evt, element) {
@@ -49,6 +69,7 @@ var CG = (function(CG) {
     console.log(gl.getProgramInfoLog(program));
   }
 
+  CG.loadImage = loadImage;
   CG.getMousePositionInElement = getMousePositionInElement;
   CG.createShader = createShader;
   CG.createProgram = createProgram;
