@@ -60,6 +60,34 @@ var CG = (function(CG) {
                 1, 2, 3
             ];
         }
+
+        /**
+         * Función que devuelve el mapeo uv de la textura
+         */
+        getUV() {
+            let uSum = 3*g_width;
+            return [
+                // Cara 1
+                (2*g_width)/uSum, 0.5,
+                g_width/uSum, 0.5,
+                (g_width+(g_width/2))/uSum, 1,
+    
+                // Cara 2
+                1, 0.5,
+                (2*g_width)/uSum, 0.5,
+                (2*g_width)+(g_width/2)/uSum, 1,
+
+                // Cara 3
+                g_width/uSum, 0.5,
+                0, 0.5,
+                (g_width/2)/uSum, 1,
+
+                // Cara 4
+                (g_width+(g_width/2))/uSum, 0,
+                g_width/uSum, 0.5,
+                (2*g_width)/uSum, 0.5,
+            ];
+        }
     }
 
     CG.Tetraedro = Tetraedro;

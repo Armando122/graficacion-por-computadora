@@ -83,6 +83,13 @@ var CG = (function(CG) {
               this.flatNumElements = vertices.length/3;
             }*/
         }
+
+        /**
+         * Función que asigna una textura a la figura
+         */
+        setTexture(imagen) {
+          this.imagen = imagen;
+        }
         
         /**
          * @param {*} gl  El contexto de render de WebGL
@@ -90,7 +97,15 @@ var CG = (function(CG) {
          * @param {*} viewMatrix  Matriz de transformación de la vista
          * @param {*} light_pos Posición de la luz
          */
-        draw(gl, material = new CG.DiffuseMaterial(gl), projectionMatrix, viewMatrix, light_pos, coef_env, coef_dif, coef_espec, alpha_s, texture) {
+        draw(gl, material = new CG.DiffuseMaterial(gl), projectionMatrix, viewMatrix, light_pos, coef_env, coef_dif, coef_espec, alpha_s) {
+          let texture;
+          if (this.imagen) {
+            texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.imagen);
+            gl.generateMipmap(gl.TEXTURE_2D);
+          }
+
           this.material = material;
           
           gl.useProgram(this.material.program);

@@ -56,13 +56,13 @@ window.addEventListener("load", async function(evt) {
         2, 3, 4, 
         CG.Matrix4.translate(new CG.Vector3(-5, 0, 5)),
       ),
-      /*new CG.Tetraedro(
+      new CG.Tetraedro(
         gl, 
         [0.5, 0.5, 0.5, 1],
         2, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, 5))
       ),
-      new CG.Toro(
+      /*new CG.Toro(
         gl,
         [0.25, 0.25, 0.25, 1], 
         4, 1, 16, 16, 
@@ -70,11 +70,16 @@ window.addEventListener("load", async function(evt) {
       ),*/
     ];
 
-    let image = await CG.loadImage("texturas/Bricks086_1K-PNG_Color.png");
-    let texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-    gl.generateMipmap(gl.TEXTURE_2D);
+    // Configuración de texturas
+    // Cilindro 
+    // Cono 
+    // Dodecaedro 
+    // Esfera 
+    // Icosaedro 
+    // Octaedro 
+    geometry[0].setTexture(await CG.loadImage("texturas/Bricks086_1K-PNG_Color.png")); // Prisma rectangular 
+    geometry[1].setTexture(await CG.loadImage("texturas/WoodFloor051_2K-PNG_Color.png")); // Tetraedro 
+    // Toro 
 
     // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
     gl.clearColor(0, 0, 0, 0);
@@ -127,8 +132,7 @@ window.addEventListener("load", async function(evt) {
           coef_env,
           1, // Coeficiente difuso
           especular,
-          alpha_s,
-          texture
+          alpha_s
           );
       }
     }
