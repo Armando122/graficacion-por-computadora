@@ -25,6 +25,7 @@ var CG = (function(CG) {
 
               let faces = this.getFaces();
               let flat_vertices = this.getVertices();
+              let uVMap = this.getUV();
 
               // triángulos ordenados en el buffer
               this.flatPositionBuffer = gl.createBuffer();
@@ -35,6 +36,11 @@ var CG = (function(CG) {
               this.smoothPositionBuffer = gl.createBuffer();
               gl.bindBuffer(gl.ARRAY_BUFFER, this.smoothPositionBuffer);
               gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(smooth_vertices), gl.STATIC_DRAW);
+
+              /* Coordenadas UV */
+              this.UVBuffer = gl.createBuffer();
+              gl.bindBuffer(gl.ARRAY_BUFFER, this.UVBuffer);
+              gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uVMap), gl.STATIC_DRAW);
         
               // los índices correspondientes
               this.indicesBuffer = gl.createBuffer();
@@ -84,10 +90,13 @@ var CG = (function(CG) {
          * @param {*} viewMatrix  Matriz de transformación de la vista
          * @param {*} light_pos Posición de la luz
          */
-        draw(gl, material = new CG.DiffuseMaterial(gl), projectionMatrix, viewMatrix, light_pos, coef_env, coef_dif, coef_espec, alpha_s) {
+        draw(gl, material = new CG.DiffuseMaterial(gl), projectionMatrix, viewMatrix, light_pos, coef_env, coef_dif, coef_espec, alpha_s, texture) {
           this.material = material;
           
           gl.useProgram(this.material.program);
+
+          // Coordenadas UV
+          this.material.setAttribute(gl, "a_texcoord", this.UVBuffer, 2, gl.FLOAT, false, 0, 0);
 
           // Color de la luz ambiental
           this.material.setUniform(gl, "l_a", [this.color[0],this.color[1], this.color[2]]);
@@ -121,6 +130,12 @@ var CG = (function(CG) {
           // PVM_matrixLocation
           let projectionViewModelMatrix = CG.Matrix4.multiply(projectionMatrix, viewModelMatrix);
           this.material.setUniform(gl, "u_PVM_matrix", projectionViewModelMatrix.toArray());
+
+          // se activa la textura con la que se va a dibujar CREAR
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, texture);
+          this.material.setUniform(gl, "u_texture", 0);
+          //gl.uniform1i(textureUniform, 0);
 
           // si es suavizado utilizamos los datos indexados
           if (this.smooth && (this.smoothNumElements>0)) {

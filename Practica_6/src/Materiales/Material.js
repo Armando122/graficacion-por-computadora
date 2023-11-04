@@ -121,6 +121,9 @@ var CG = (function(CG) {
                 else if (type === gl.INT && size == 1) {
                   gl.uniform1i(unif, data);
                 }
+                else if (type === gl.SAMPLER_2D) {
+                  gl.uniform1i(unif, data);
+                }
                 else if (type === gl.BOOL) {
                   gl.uniform1iv(unif, data);
                 }

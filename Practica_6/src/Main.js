@@ -1,10 +1,11 @@
 let gl, program, programW;
 
-window.addEventListener("load", function(evt) {
+window.addEventListener("load", async function(evt) {
     // se obtiene una referencia al canvas
     let canvas = document.getElementById("the_canvas");
     let checkboWire = document.getElementById("wire_ckbx");
     let checkboEspec = document.getElementById("especular_ckbx");
+    let checkboTexture = document.getElementById("texture_ckbx");
   
     // se obtiene una referencia al contexto de render de WebGL
     gl = canvas.getContext("webgl");
@@ -14,7 +15,7 @@ window.addEventListener("load", function(evt) {
   
     // se crean y posicionan los modelos geométricos, uno de cada tipo
     geometry = [
-      new CG.Cilindro(
+      /*new CG.Cilindro(
         gl, 
         [1, 0, 0, 1], 
         2, 2, 16, 16, 
@@ -48,14 +49,14 @@ window.addEventListener("load", function(evt) {
         [1, 1, 0, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(5, 0, 0))
-      ),
+      ),*/
       new CG.PrismaRectangular(
         gl, 
         [1, 0.2, 0.3, 1], 
         2, 3, 4, 
         CG.Matrix4.translate(new CG.Vector3(-5, 0, 5)),
       ),
-      new CG.Tetraedro(
+      /*new CG.Tetraedro(
         gl, 
         [0.5, 0.5, 0.5, 1],
         2, 
@@ -66,8 +67,15 @@ window.addEventListener("load", function(evt) {
         [0.25, 0.25, 0.25, 1], 
         4, 1, 16, 16, 
         CG.Matrix4.translate(new CG.Vector3(5, 0, 5))
-      ),
+      ),*/
     ];
+
+    let image = await CG.loadImage("texturas/Bricks086_1K-PNG_Color.png");
+    let texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+    gl.generateMipmap(gl.TEXTURE_2D);
+
     // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
     gl.clearColor(0, 0, 0, 0);
     // se activa la prueba de profundidad, esto hace que se utilice el buffer de profundidad para determinar que píxeles se dibujan y cuales se descartan
@@ -119,7 +127,8 @@ window.addEventListener("load", function(evt) {
           coef_env,
           1, // Coeficiente difuso
           especular,
-          alpha_s
+          alpha_s,
+          texture
           );
       }
     }
@@ -160,14 +169,20 @@ window.addEventListener("load", function(evt) {
     checkboWire.addEventListener("change", function() {
       if (checkboWire.checked) {
         checkboEspec.disabled = true;
+        checkboTexture.disabled = true;
         wireframe();
       } else {
         checkboEspec.disabled = false;
+        checkboTexture.disabled = false;
         // Se regresa al estado seleccionado
         if (checkboEspec.checked) {
           draw(1, 0.0685, new CG.PhongMaterial(gl), 5.0);  // Dibujado difuso y especular
         } else {
-          draw(0, 0.0685, new CG.DiffuseMaterial(gl));  // Dibujado solo difuso
+          if (checkboTexture.checked) {
+            draw(0,0.0685, new CG.TextureMaterial(gl), 0);  // texturas
+          } else {
+            draw(0, 0.0685, new CG.DiffuseMaterial(gl));  // Dibujado solo difuso
+          }
         }
       }
     });
@@ -177,6 +192,20 @@ window.addEventListener("load", function(evt) {
         draw(1, 0.0685, new CG.PhongMaterial(gl), 5.0);  // Dibujado difuso y especular
       } else {
         draw(0, 0.0685, new CG.DiffuseMaterial(gl));  // Dibujado solo difuso
+      }
+    });
+
+    checkboTexture.addEventListener("change", function() {
+      if (checkboTexture.checked) {
+        checkboEspec.disabled = true;
+        draw(0,0.0685, new CG.TextureMaterial(gl), 0);  // texturas
+      } else {
+        checkboEspec.disabled = false;
+        if (checkboEspec.checked) {
+          draw(1, 0.0685, new CG.PhongMaterial(gl), 5.0);  // Dibujado difuso y especular
+        } else {
+          draw(0, 0.0685, new CG.DiffuseMaterial(gl));  // Dibujado solo difuso
+        }
       }
     });
     
