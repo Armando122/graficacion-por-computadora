@@ -43,13 +43,13 @@ window.addEventListener("load", async function(evt) {
         [1, 0 , 1, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, 0))
-      ),
+      ),*/
       new CG.Octaedro(
         gl, 
         [1, 1, 0, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(5, 0, 0))
-      ),*/
+      ),
       new CG.PrismaRectangular(
         gl, 
         [1, 0.2, 0.3, 1], 
@@ -76,9 +76,9 @@ window.addEventListener("load", async function(evt) {
     // Dodecaedro 
     // Esfera 
     // Icosaedro 
-    // Octaedro 
-    geometry[0].setTexture(await CG.loadImage("texturas/Bricks086_1K-PNG_Color.png")); // Prisma rectangular 
-    geometry[1].setTexture(await CG.loadImage("texturas/WoodFloor051_2K-PNG_Color.png")); // Tetraedro 
+    geometry[0].setTexture(await CG.loadImage("texturas/Tiles093_2K-PNG_Color.png")); // Octaedro 
+    geometry[1].setTexture(await CG.loadImage("texturas/Bricks086_1K-PNG_Color.png")); // Prisma rectangular 
+    geometry[2].setTexture(await CG.loadImage("texturas/WoodFloor051_2K-PNG_Color.png")); // Tetraedro 
     // Toro 
 
     // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente

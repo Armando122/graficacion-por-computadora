@@ -83,8 +83,8 @@ var CG = (function(CG) {
                 (g_width/2)/uSum, 1,
 
                 // Cara 4
-                (g_width+(g_width/2))/uSum, 0,
                 g_width/uSum, 0.5,
+                (g_width+(g_width/2))/uSum, 0,
                 (2*g_width)/uSum, 0.5,
             ];
         }

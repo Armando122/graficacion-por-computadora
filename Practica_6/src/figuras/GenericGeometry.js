@@ -19,8 +19,7 @@ var CG = (function(CG) {
             this.flatNumElems = 0;
             this.smoothNumElems = 0;
 
-            // Si está activado el smooth la figura se dibujará en modo smooth
-            /*if (this.smooth) {*/
+            // Se hacen los caćulos de buffers
               let smooth_vertices = this.getVerticesW();
 
               let faces = this.getFaces();
