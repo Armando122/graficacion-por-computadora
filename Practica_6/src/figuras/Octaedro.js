@@ -61,6 +61,55 @@ var CG = (function(CG) {
                 5, 4, 2
             ];
         }
+
+        /**
+         * Función que devuelve el mapeo uv de la textura
+         */
+        getUV() {
+            let uSum = 4*g_width;
+            let altura = (g_width*Math.sqrt(3))/2;
+            return [
+                // Cara 1
+                g_width/uSum, 0.5,
+                0, 0.5,
+                (g_width/2)/uSum, 1,
+
+                // Cara 2
+                (2*g_width)/uSum, 0.5,
+                g_width/uSum, 0.5,
+                ((g_width/2)+g_width)/uSum, 1,
+
+                // Cara 3
+                (3*g_width)/uSum, 0.5,
+                (2*g_width)/uSum, 0.5,
+                ((2*g_width)+(g_width/2))/uSum, 1,
+
+                // Cara 4
+                1, 0.5,
+                (3*g_width)/uSum, 0.5,
+                ((3*g_width)+(g_width/2))/uSum, 1,
+
+                // Cara 5
+                g_width/uSum, 0.5,
+                0, 0.5,
+                (g_width/2)/uSum, 0,
+
+                // Cara 6
+                (2*g_width)/uSum, 0.5,
+                g_width/uSum, 0.5,
+                ((g_width/2)+g_width)/uSum, 0,
+
+                // Cara 7
+                (3*g_width)/uSum, 0.5,
+                (2*g_width)/uSum, 0.5,
+                ((2*g_width)+(g_width/2))/uSum, 0,
+
+                // Cara 8
+                1, 0.5,
+                (3*g_width)/uSum, 0.5,
+                ((3*g_width)+(g_width/2))/uSum, 0,
+            ];
+        }
     }
 
     CG.Octaedro = Octaedro;
