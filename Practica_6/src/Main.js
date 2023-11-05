@@ -26,14 +26,14 @@ window.addEventListener("load", async function(evt) {
         [0, 1, 0, 1], 
         2, 2, 16, 16, 
         CG.Matrix4.translate(new CG.Vector3(0, 0, -5))
-      ),
+      ),*/
       new CG.Dodecaedro(
         gl, 
         [0, 0, 1, 1], 
         2, 
         CG.Matrix4.translate(new CG.Vector3(5, 0, -5))
       ),
-      new CG.Esfera(
+      /*new CG.Esfera(
         gl, 
         [0, 1, 1, 1],
         2, 16, 16, 
@@ -73,12 +73,12 @@ window.addEventListener("load", async function(evt) {
     // Configuración de texturas
     // Cilindro 
     // Cono 
-    // Dodecaedro 
+    geometry[0].setTexture(await CG.loadImage("texturas/Tiles074_1K-PNG_Color.png")); // Dodecaedro 
     // Esfera 
     // Icosaedro 
-    geometry[0].setTexture(await CG.loadImage("texturas/Tiles093_2K-PNG_Color.png")); // Octaedro 
-    geometry[1].setTexture(await CG.loadImage("texturas/Bricks086_1K-PNG_Color.png")); // Prisma rectangular 
-    geometry[2].setTexture(await CG.loadImage("texturas/WoodFloor051_2K-PNG_Color.png")); // Tetraedro 
+    geometry[1].setTexture(await CG.loadImage("texturas/Tiles093_2K-PNG_Color.png")); // Octaedro 
+    geometry[2].setTexture(await CG.loadImage("texturas/Bricks086_1K-PNG_Color.png")); // Prisma rectangular 
+    geometry[3].setTexture(await CG.loadImage("texturas/WoodFloor051_2K-PNG_Color.png")); // Tetraedro 
     // Toro 
 
     // se determina el color con el que se limpia la pantalla, en este caso un color negro transparente
