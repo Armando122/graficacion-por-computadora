@@ -98,7 +98,6 @@ var CG = (function(CG) {
          * Función que devuelve el mapeo uv de la textura
          */
         getUV() {
-            let altura = 2 * ((2/6)/(2*Math.tan(36*Math.PI/180)));
             return [
                 // Cara 1
                 3/11, 2/3,

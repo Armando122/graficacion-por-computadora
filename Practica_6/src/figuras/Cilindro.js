@@ -82,6 +82,30 @@ var CG = (function(CG) {
             
             return faces;
         }
+
+        /**
+         * Función que devuelve el mapeo uv de la textura
+         */
+        getUV() {
+            let mapeo = [];
+  
+            // Rectangulos
+            for (let i = 0; i < g_Nv; i++) {
+                for (let j = 0; j < g_Nu; j++) {
+                    mapeo.push(
+                        j/g_Nu, 1-((i+1)/g_Nv),
+                        (j+1)/g_Nu, 1-(i/g_Nv),
+                        (j+1)/g_Nu, 1-(i+1)/g_Nv,
+
+                        j/g_Nu, 1-(i/g_Nv),
+                        (j+1)/g_Nu, 1-(i/g_Nv),
+                        j/g_Nu, 1-((i+1)/g_Nv),
+                    );
+                }
+            }
+  
+            return mapeo;
+        }
     }
 
     CG.Cilindro = Cilindro;
