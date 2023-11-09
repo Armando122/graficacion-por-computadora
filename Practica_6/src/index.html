@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Primitivas geométricas</title>
+  
+  <!-- Operaciones -->
+  <script src="Math/Vector3.js"></script>
+  <script src="Math/Vector4.js"></script>
+  <script src="Math/Matrix3.js"></script>
+  <script src="Math/Matrix4.js"></script>
+  
+  
+  <!-- Materiales -->
+  <script src="Materiales/Material.js"></script>
+  <script src="Materiales/FlatMaterial.js"></script>
+  <script src="Materiales/WireframeMaterial.js"></script>
+  <script src="Materiales/DiffuseMaterial.js"></script>
+  <script src="Materiales/PhongMaterial.js"></script>
+  <script src="Materiales/TextureMaterial.js"></script>
+  
+  <!-- Geometría -->
+  <script src="figuras/GenericGeometry.js"></script>
+  <script src="figuras/Cilindro.js"></script>
+  <script src="figuras/Cono.js"></script>
+  <script src="figuras/Dodecaedro.js"></script>
+  <script src="figuras/Esfera.js"></script>
+  <script src="figuras/Icosaedro.js"></script>
+  <script src="figuras/Octaedro.js"></script>
+  <script src="figuras/PrismaRectangular.js"></script>
+  <script src="figuras/Tetraedro.js"></script>
+  <script src="figuras/Toro.js"></script>
+  
+  
+  <!-- Utilería -->
+  <script src="Utils/Utils.js"></script>
+  <script src="Utils/TrackballCamera.js"></script>
+
+  <!-- Archivo principal -->
+  <script src="Main.js"></script>
+
+  <!-- Pruebas -->
+    <!--<script type="text/javascript" src="test/Vector3Test.js"></script>
+    <script type="text/javascript" src="test/Matrix3Test.js"></script>
+    <script type="text/javascript" src="test/Vector4Test.js"></script>
+    <script type="text/javascript" src="test/Matrix4test.js"></script>-->
+</head>
+
+<body>
+  <canvas id="the_canvas" width="800" height="600" style="border: 1px dotted gray;"></canvas>
+  <br>
+  <input type="checkbox" id="wire_ckbx"><label for=”wire_ckbx”>Wireframe</label>
+  <br>
+  <input type="checkbox" id="especular_ckbx"><label for=”especular_ckbx”>Reflexión especular</label>
+  <input type="checkbox" id="texture_ckbx"><label for=”texture_ckbx”>Textura</label>
+
+</body>
+
+</html>
