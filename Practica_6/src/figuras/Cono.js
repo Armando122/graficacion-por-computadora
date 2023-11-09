@@ -93,6 +93,41 @@ var CG = (function(CG) {
 
             return faces;
         }
+
+        /**
+         * Función que devuelve el mapeo uv de la textura
+         */
+        getUV() {
+          let mapeo = [];
+          let sum = 1/(2*g_Nu*g_Nv);
+
+          // Rectangulos
+          for (let i = g_Nv-1; i > 0; i--) {
+              for (let j = 0; j < g_Nu+1; j++) {
+                  mapeo.push(
+                    ((j*2)+1)/(2*g_Nu)-((i+1)*sum), 1-((i+1)/g_Nv),
+                    ((j*2)+1)/(2*g_Nu)+(i*sum), 1-(i/g_Nv),
+                    ((j*2)+1)/(2*g_Nu)+((i+1)*sum), 1-((i+1)/g_Nv),
+
+                    
+                    ((j*2)+1)/(2*g_Nu)-(i*sum), 1-(i/g_Nv),
+                    ((j*2)+1)/(2*g_Nu)+(i*sum), 1-(i/g_Nv),
+                    ((j*2)+1)/(2*g_Nu)-((i+1)*sum), 1-((i+1)/g_Nv),
+                  );
+              }
+          }
+
+          // Triángulos superiores
+          for (let i = 0; i < g_Nu; i++) {
+            mapeo.push(
+              ((i*2)+1)/2*g_Nu + sum, 1-(1/g_Nv),
+              ((i*2)+1)/g_Nu - sum, 1-(1/g_Nv),
+              ((i*2)+1)/2*g_Nu, 1,
+            );
+        }
+
+          return mapeo;
+      }
     }
 
     CG.Cono = Cono;

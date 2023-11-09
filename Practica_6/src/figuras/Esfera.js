@@ -103,6 +103,49 @@ var CG = (function(CG) {
             }
             return faces;
         }
+
+        /**
+         * Función que devuelve el mapeo uv de la textura
+         */
+        getUV() {
+            let mapeo = [];
+
+            // Triángulos superiores
+            for (let i = 0; i < g_Nv; i++) {
+                mapeo.push(
+                    ((i+1)*2)/(2*g_Nv), (g_Nu-1)/g_Nu,
+                    (i*2)/(2*g_Nv), (g_Nu-1)/g_Nu,
+                    ((i*2)+1)/(2*g_Nv), 1
+                );
+            }//96
+
+            // Rectangulos
+            for (let i = 1; i < g_Nu-1; i++) {
+                for (let j = 0; j < g_Nv; j++) {
+                    mapeo.push(
+                        (j+1)/g_Nv, (g_Nu-i)/g_Nu,
+                        j/g_Nv, (g_Nu-i)/g_Nu,
+                        j/g_Nv, (g_Nu-(i+1))/g_Nu,
+                        
+                        (j+1)/g_Nv, (g_Nu-(i+1))/g_Nu,
+                        (j+1)/g_Nv, (g_Nu - i)/g_Nu,
+                        j/g_Nv, (g_Nu-(i+1))/g_Nu,
+                    );
+                }
+            }
+
+            // Tirángulos inferiores
+            for (let i = 0; i < g_Nv; i++) {
+                mapeo.push(
+                    ((i+1)*2)/(2*g_Nv), 1/g_Nu,
+                    ((i*2)+1)/(2*g_Nv), 0,
+                    (i*2)/(2*g_Nv), 1/g_Nu,
+
+                );
+            }
+
+            return mapeo;
+        }
     }
 
     CG.Esfera = Esfera;

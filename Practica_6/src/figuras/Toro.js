@@ -83,6 +83,31 @@ var CG = (function(CG) {
               
             return faces;
         }
+
+        /**
+         * Función que devuelve el mapeo uv de la textura
+         */
+        getUV() {
+            let mapeo = [];
+  
+            // Rectangulos
+            for (let i = 0; i < g_Nu; i++) {
+                for (let j = 0; j < g_Nv; j++) {
+                    mapeo.push(
+                        (j+1)/g_Nv, 1-(i/g_Nu),
+                        (j+1)/g_Nv, 1-(i+1)/g_Nu,
+                        j/g_Nv, 1-(i+1)/g_Nu,
+                        //j/g_Nv, 1-(i+1)/g_Nu,
+
+                        j/g_Nv, 1-(i/g_Nu),
+                        (j+1)/g_Nv, 1-(i/g_Nu),
+                        j/g_Nv, 1-(i+1)/g_Nu,
+                    );
+                }
+            }
+  
+            return mapeo;
+        }
     }
 
     CG.Toro = Toro;
