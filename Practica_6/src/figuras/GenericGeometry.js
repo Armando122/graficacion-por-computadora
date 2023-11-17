@@ -88,6 +88,11 @@ var CG = (function(CG) {
          */
         setTexture(imagen) {
           this.imagen = imagen;
+          this.texture = gl.createTexture();
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, this.texture);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.imagen);
+          gl.generateMipmap(gl.TEXTURE_2D);
         }
         
         /**
@@ -97,13 +102,6 @@ var CG = (function(CG) {
          * @param {*} light_pos Posición de la luz
          */
         draw(gl, material = new CG.DiffuseMaterial(gl), projectionMatrix, viewMatrix, light_pos, coef_env, coef_dif, coef_espec, alpha_s) {
-          let texture;
-          if (this.imagen) {
-            texture = gl.createTexture();
-            gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.imagen);
-            gl.generateMipmap(gl.TEXTURE_2D);
-          }
 
           this.material = material;
           
@@ -146,8 +144,8 @@ var CG = (function(CG) {
           this.material.setUniform(gl, "u_PVM_matrix", projectionViewModelMatrix.toArray());
 
           // se activa la textura con la que se va a dibujar CREAR
-          gl.activeTexture(gl.TEXTURE0);
-          gl.bindTexture(gl.TEXTURE_2D, texture);
+          //gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, this.texture);
           this.material.setUniform(gl, "u_texture", 0);
           //gl.uniform1i(textureUniform, 0);
 
